@@ -1,0 +1,113 @@
+<mat-toolbar class="mat-elevation-z8">
+
+  <mat-form-field subscriptSizing="dynamic" class="ml-4">
+    <mat-label>{{'schema'|translate}}</mat-label>
+    <mat-select appearance="outline" [(value)]="selectedSchema">
+      <mat-option>{{'none'|translate}}</mat-option>
+      <mat-option *ngFor="let item of schemas$" [value]="item">{{item.username}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field subscriptSizing="dynamic" class="ml-4" style="width: 320px;">
+    <mat-label>{{'type'|translate}}</mat-label>
+    <mat-select appearance="outline" [(value)]="selectedType">
+      <mat-option>{{'none'|translate}}</mat-option>
+      <mat-option *ngFor="let ot of objectTypes$" [value]="ot">
+        <img [src]="'assets/object/'+ot.icon" width="16px">
+        {{ot.label|translatepluraldb}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field subscriptSizing="dynamic" class="ml-4" style="width: 320px;">
+    <mat-label>{{'locked.by'|translate}}</mat-label>
+    <mat-select appearance="outline" [(value)]="selectedUser">
+      <mat-option>{{'none'|translate}}</mat-option>
+      <mat-option [value]="currentUser.data.id">{{'myself'|translate}}</mat-option>
+      <mat-option value="**any**">{{'any'|translate}}</mat-option>
+      <mat-option *ngFor="let u of users" [value]="u.id">
+        {{u.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field subscriptSizing="dynamic" class="ml-4" style="width: 640px;">
+    <mat-label>{{'name'|translate}}</mat-label>
+    <input #textbox matInput type="text" [value]="selectedNombre" (input)="selectedNombre = textbox.value;" />
+    <button *ngIf="selectedNombre" matSuffix mat-icon-button aria-label="Clear" (click)="selectedNombre=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <button mat-raised-button class="btn btn-primary ml-4" color="primary" (click)="getOracleObjects()"
+    [disabled]="!(selectedSchema || selectedType || selectedNombre || selectedUser)">
+    <mat-icon>search</mat-icon>
+    {{'btn.buscar'|translate}}
+  </button>
+
+</mat-toolbar>
+
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<div class="table-container mat-elevation-z8">
+  <table id="tableObjects" mat-table matSort [dataSource]="dataSourceOracleObject" (matSortChange)="announceSortChange($event)">
+
+    <ng-container matColumnDef="lock">
+      <th mat-header-cell *matHeaderCellDef>{{'locked'|translate}}</th>
+      <td mat-cell *matCellDef="let element">
+          <img src="assets/48x48/lock48_disabled.png" 
+              [title]="'locked.by-user'|translate: {user: element.lock.user}"
+              *ngIf="element.isBlocked && element.lock.user!==currentUser.login.toUpperCase() && !currentUser.data.roleAdmin"/>        
+          <div class="lock-image"
+            *ngIf="!element.isBlocked || element.lock.user==currentUser.login.toUpperCase() || currentUser.data.roleAdmin"
+            [title]="element.isBlocked ? ('btn.unlock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name : ('btn.lock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name"
+            (click)=" element.isBlocked ? unlockObject(element) : lockObject(element)">
+            <img class="lock-image-main"
+              [src]="element.isBlocked ? 'assets/48x48/lock48.png' : 'assets/48x48/unlock48.png'" width="48px">
+            <img class="lock-image-overlay"
+              [src]="element.isBlocked ? 'assets/48x48/unlock48.png' : 'assets/48x48/lock48.png'" width="48px">
+          </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="object">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'object'|translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <img [src]="'assets/object/'+element.icon" width="16px">
+        <a routerLink="." queryParamsHandling="preserve" (click)="showLog(element)"
+          style="margin-left: 4px;">{{(element.label|translatedb) + ' ' + element.owner + '.' + element.name}}</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'user'|translate}}</th>
+      <td mat-cell *matCellDef="let element"> {{element.isBlocked ? element.lock.username : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'date'|translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <div>{{element.isBlocked ? (element.lock.date | dateSpanish:currentUser.data.lang) : ''}}</div>
+        <div>{{element.isBlocked ? '(' + (element.lock.date | lapse) + ')' : ''}}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="comment">
+      <th mat-header-cell *matHeaderCellDef>{{'comment'|translate}}</th>
+      <td mat-cell *matCellDef="let element"><span class="comment">{{element.isBlocked ? element.lock.comment : ''}}</span></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+</div>
+
+<div class="d-flex flex-column flex-md-row mat-elevation-z8">
+  <div class="white" *ngIf="dataSourceOracleObject.data.length > 0">
+    <mat-icon class="btnExcel" (click)="excel()" [title]="'export.xls'|translate">save_alt</mat-icon>
+  </div>
+  <span class="spacer white"></span>    
+  <mat-paginator #paginatorOracleObject="matPaginator" [pageSizeOptions]="[5, 10, 15, 20]" [pageSize]="10" showFirstLastButtons>
+  </mat-paginator>
+</div>

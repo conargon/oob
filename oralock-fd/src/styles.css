@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+app-root {
+    display: block;
+    overflow: auto;
+    height: 100%;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.window-icon {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.header {
+    display: flex;
+    padding: 4px;
+    background-color: gainsboro;
+    align-items: center;
+}
+
+.header-icon {
+    margin-left: 8px;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.btn-dialog {
+    margin-right:16px;
+}
+
+.btn-dialog-left {
+    margin-left:16px;
+}
+
+.mat-mdc-form-field {
+    margin-bottom: 10px;
+}
+
+.btnExcel {
+    align-self: center;
+    margin: 16px;    
+    cursor: pointer;
+    color: gray;
+ }
+
+ .white {
+    background: white;
+ }

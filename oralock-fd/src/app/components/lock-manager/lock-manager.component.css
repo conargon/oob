@@ -1,0 +1,63 @@
+.mat-column-lock {
+    width: 5%;
+    border-right: 1px solid grey;
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-date {
+    width: 20%;
+}
+
+.mat-column-user {
+    width: 20%;
+}
+
+.mat-column-object {
+    width: 20%;
+}
+
+.mat-column-comment {
+    width: 35%;
+    /*font-size: 0.8rem;*/
+}
+
+.comment {
+    font-size: 0.8rem;
+}
+
+.mat-toolbar-single-row {
+    height: 100px;
+}
+
+.mat-mdc-select-panel {
+    min-height: 60vh !important;
+}
+
+.table-container {
+    height: calc(100vh - 230px); 
+    overflow: auto; 
+}
+
+.lock-image {
+    position: relative;
+    max-width: 100%;    
+    display: inline-block;
+    cursor: pointer;
+}
+
+.lock-image .lock-image-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity .2s;    
+}
+
+.lock-image:hover .lock-image-overlay {
+    opacity: 1;
+}
+

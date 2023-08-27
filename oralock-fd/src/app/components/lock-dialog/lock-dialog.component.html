@@ -1,0 +1,32 @@
+<div class="header">
+    <img src="assets/64x64/lock64.png" id="icon" alt="Lock Icon" class="header-icon" />
+    <h1 mat-dialog-title>{{('lock'|translate)+ ' ' + data.objectName}}</h1>
+    <span class="spacer"></span>
+    <mat-icon class="window-icon" (click)="cancel()">close</mat-icon>    
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="lockForm" novalidate>
+        <mat-form-field  style="width: 320px;margin-bottom: 42px;">
+            <mat-label>{{'ref_its'|translate}}</mat-label>
+            <input #textref matInput type="text" [value]="ref" (input)="ref = textref.value;" formControlName="ref" id="ref"/>
+            <mat-hint>{{'lockdialog.ref.hint'|translate}}</mat-hint>
+            <mat-error *ngIf="myError('ref', 'maxlength')">{{'field.maxsize'|translate: {field: ('ref_its'|translate),
+                maxsize: 30} }}</mat-error>                       
+        </mat-form-field>
+        <mat-form-field style="width: 640px; height: 320px;">
+            <mat-label>{{'comment'|translate}}</mat-label>
+            <textarea #textbox matInput cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="11"
+                [value]="comment" (input)="comment = textbox.value;" required
+                formControlName="comment" id="comment"></textarea>
+            <mat-hint>{{'lockdialog.comment.hint'|translate}}</mat-hint>
+            <mat-error *ngIf="myError('comment', 'required')">{{'field.required'|translate: {field: ('comment'|translate)}
+            }}</mat-error>
+            <mat-error *ngIf="myError('comment', 'minlength')">{{'field.minsize'|translate: {field: ('comment'|translate),
+                minsize: 15} }}</mat-error>              
+        </mat-form-field>
+    </form> 
+</div>
+<div mat-dialog-actions align="end">
+    <button class="btn btn-primary btn-dialog" (click)="confirm()" color="primary">{{'ok'|translate}}</button>
+    <button class="btn btn-dialog" (click)="cancel()" color="primary">{{'cancel'|translate}}</button>
+</div>

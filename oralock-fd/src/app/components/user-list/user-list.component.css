@@ -1,0 +1,28 @@
+.mat-toolbar-single-row {
+    height: 100px;
+}
+
+.btRow {
+    margin-left: 8px;
+}
+
+.row-disabled {
+    color: darkgray;
+}
+
+.table-container {
+    height: calc(100vh - 230px); 
+    overflow: auto; 
+ }
+
+ /*
+ .mat-column-enabled,
+ .mat-column-disabled
+  {
+    text-align: center;
+}*/
+
+/*.mat-column-countLocks
+{
+  text-align: right;
+}*/

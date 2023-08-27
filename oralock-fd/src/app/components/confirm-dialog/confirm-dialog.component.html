@@ -1,0 +1,13 @@
+<div class="header">
+    <mat-icon style="scale: 2; margin-left: 16px;">error_outline</mat-icon>
+    <h1 mat-dialog-title>{{ data.title }}</h1>
+    <span class="spacer"></span>
+    <mat-icon class="window-icon" (click)="cancel()">close</mat-icon>       
+</div>
+<div mat-dialog-content style="padding: 32px;">
+    <p class="dialog-message">{{ data.message }}</p>
+</div>
+<div mat-dialog-actions align="end">
+    <button class="btn btn-primary btn-dialog" (click)="confirm()" color="primary">{{ data.confirmText }}</button>
+    <button class="btn btn-dialog" (click)="cancel()" *ngIf="data.confirmAction">{{ data.cancelText }}</button>
+</div>

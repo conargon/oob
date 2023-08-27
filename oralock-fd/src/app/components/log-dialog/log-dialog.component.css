@@ -1,0 +1,27 @@
+.mat-column-op {
+    width: 15%;
+}
+
+.mat-column-date {
+    width: 15%;
+    text-align: center;
+}
+
+.mat-column-username {
+    width: 25%;
+}
+
+.mat-column-comment {
+    width: 45%;
+    font-size: 0.8rem;
+}
+
+.table-container {
+    height: calc(100vh - 480px); 
+    overflow: auto; 
+ }
+
+ .table-container-max {
+    height: calc(100vh - 225px); 
+    overflow: auto; 
+ }

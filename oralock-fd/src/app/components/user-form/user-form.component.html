@@ -1,0 +1,77 @@
+<div class="header">
+    <img src="assets/64x64/users64.png" id="icon" alt="User Icon" class="header-icon" />
+    <h1 mat-dialog-title>{{isNewUser ? ('user.new'|translate) : ('user.edit'|translate) + ' ' + user.id}}</h1>
+    <span class="spacer"></span>
+    <mat-icon class="window-icon" (click)="cancel()">close</mat-icon>
+</div>
+<div mat-dialog-content style="width: 640px;">
+    <form [formGroup]="userForm" novalidate>
+        <mat-form-field style="width: 320px;" *ngIf="isNewUser">
+            <mat-label>{{'user.id'|translate}}</mat-label>
+            <input #textid matInput type="text" [value]="user.id" (input)="user.id = textid.value;" formControlName="id"
+                id="id" required maxlength="30" />
+            <mat-error *ngIf="myError('id', 'required')">{{'field.required'|translate: {field: ('user.id'|translate)}
+                }}</mat-error>
+            <mat-error *ngIf="myError('id', 'maxlength')">{{'field.maxsize'|translate: {field: ('user.id'|translate),
+                maxsize: 30} }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>{{'user.name'|translate}}</mat-label>
+            <input #textname matInput type="text" [value]="user.name" (input)="user.name = textname.value;"
+                formControlName="name" id="name" required maxlength="250" />
+            <mat-error *ngIf="myError('name', 'required')">{{'field.required'|translate: {field:
+                ('user.name'|translate)} }}</mat-error>
+            <mat-error *ngIf="myError('name', 'maxlength')">{{'field.maxsize'|translate: {field:
+                ('user.name'|translate), maxsize: 250} }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>{{'user.email'|translate}}</mat-label>
+            <input #textemail matInput type="text" [value]="user.email" (input)="user.email = textemail.value;"
+                formControlName="email" id="email" required maxlength="250" />
+            <mat-error *ngIf="myError('email', 'required')">{{'field.required'|translate: {field:
+                ('user.email'|translate)} }}</mat-error>
+            <mat-error *ngIf="myError('email', 'maxlength')">{{'field.maxsize'|translate: {field:
+                ('user.email'|translate), maxsize: 250} }}</mat-error>
+            <mat-error *ngIf="myError('email', 'email')">{{'field.email-invalid'|translate}}</mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 320px;">
+            <mat-label>{{'user.role'|translate}}</mat-label>
+            <mat-select appearance="outline" [(value)]="user.role" formControlName="role" id="role" required>
+                <mat-option *ngFor="let r of roles" [value]="r.id">
+                    {{r.label|translatedb}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="myError('role', 'required')">{{'field.required'|translate: {field:
+                ('user.role'|translate)} }}</mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 320px;">
+            <mat-label>{{'user.lang'|translate}}</mat-label>
+            <mat-select appearance="outline" [(value)]="user.lang" formControlName="lang" id="lang" required>
+                <mat-option value="es">
+                    {{'lang.es'|translate}}
+                </mat-option>
+                <mat-option value="va">
+                    {{'lang.va'|translate}}
+                </mat-option>
+                <mat-option value="en">
+                    {{'lang.en'|translate}}
+                </mat-option>                                
+            </mat-select>
+            <mat-error *ngIf="myError('lang', 'required')">{{'field.required'|translate: {field:
+                ('user.lang'|translate)} }}</mat-error>
+        </mat-form-field>     
+        <div *ngIf="user.enabled != null">
+            {{('user.enabled'|translate) + ': ' + (user.enabled | dateSpanishDate:currentUser.data.lang)}}
+        </div>  
+        <div *ngIf="user.disabled != null">
+            {{('user.disabled'|translate) + ': ' + (user.disabled | dateSpanishDate:currentUser.data.lang)}}
+        </div>          
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button class="btn btn-primary btn-dialog-left" color="warn" *ngIf="user.disabled!=null && !isNewUser && user.id != currentUser.data.id" (click)="enable()"><mat-icon>check</mat-icon>{{'btn.enable'|translate}}</button>
+    <button mat-raised-button class="btn btn-primary btn-dialog-left" color="warn" *ngIf="user.disabled==null && !isNewUser && user.id != currentUser.data.id" (click)="disable()"><mat-icon>highlight_off</mat-icon>{{'btn.disable'|translate}}</button>
+    <span class="spacer"></span>
+    <button mat-raised-button class="btn btn-primary btn-dialog" (click)="confirm()" color="primary"><mat-icon>save</mat-icon>{{'save'|translate}}</button>
+    <button mat-raised-button class="btn btn-dialog" (click)="cancel()">{{'cancel'|translate}}</button>
+</div>

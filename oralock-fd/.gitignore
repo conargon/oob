@@ -1,0 +1,8 @@
+.editorconfig
+
+target/
+node/
+node_modules/
+.angular/
+.vscode/
+dist/

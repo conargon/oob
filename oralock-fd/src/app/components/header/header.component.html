@@ -1,0 +1,11 @@
+<header class="mat-elevation-z8" *ngIf="currentUser && currentUser.login">
+    <img class="logo" src="assets/locked-database.png">
+    <h4 class="headerTitle">{{'app.title'|translate}}</h4>
+    <h4 class="headerSection">{{title}}</h4>
+    <div class="headerUser" [title]="'profile.edit'|translate: {username: currentUser.data.name}" (click)="editUser()">{{currentUser.login}}</div>
+    <a class="linkHeader" routerLink="/lockmanager" *ngIf="currentUser.data.roleAdmin"><mat-icon class="headerBtn" [title]="'btnLocks.hint'|translate">lock</mat-icon></a>
+    <a class="linkHeader" routerLink="/users" *ngIf="currentUser.data.roleAdmin"><mat-icon class="headerBtn" [title]="'btnUsers.hint'|translate">account_box</mat-icon></a>
+    <a class="linkHeader" (click)="settings()" *ngIf="currentUser.data.roleAdmin"><mat-icon class="headerBtn" [title]="'btnSettings.hint'|translate">settings</mat-icon></a>
+    <a class="linkHeader" (click)="about()"><mat-icon class="headerBtn" [title]="'btnAbout.hint'|translate">help_outline</mat-icon></a>
+    <a class="linkHeader" (click)="logout()"><mat-icon class="headerBtn" [title]="'btnLogout.hint'|translate">exit_to_app</mat-icon></a>
+</header>
