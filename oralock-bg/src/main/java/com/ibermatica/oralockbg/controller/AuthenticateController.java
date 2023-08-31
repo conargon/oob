@@ -48,7 +48,7 @@ public class AuthenticateController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody String refreshToken) {			
 		if(jwtTokenUtil.validateJwtToken(refreshToken)) {
-			String username = jwtTokenUtil.extractUsername(refreshToken);			
+			String username = jwtTokenUtil.extractUsername(refreshToken);
 			UserPrincipal u = new UserPrincipal(username, "", "");
 			String token = jwtTokenUtil.generateToken(u);		
 			return ResponseEntity.status(HttpStatus.CREATED).body(new AuthenticationResponse(token, refreshToken, null));
