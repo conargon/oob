@@ -506,6 +506,50 @@ compound trigger
 end oobl_block_ciu;
 /
 
+create or replace trigger oob.oobl_db_log_trg
+after ddl
+on database
+declare
+   v_owner_obj varchar2(30);
+   v_name_obj varchar2(30);
+   v_type_obj varchar2(30);  
+   dummy number;
+begin
+
+    v_owner_obj := ora_dict_obj_owner;
+    v_name_obj := ora_dict_obj_name;
+    v_type_obj := ora_dict_obj_type;
+    
+    -- el esquema está registrado en oobl        
+    begin
+        select 1
+        into dummy
+        from oobl_schema
+        where os_schema = v_owner_obj;        
+    exception
+        when no_data_found then
+             return;
+    end;       
+       
+    -- el tipo está registrado y activo
+    begin
+        select 1
+        into dummy
+        from oobl_object
+        where oo_id = v_type_obj
+          and oo_active = 1;        
+    exception
+        when no_data_found then
+             return;
+    end;       
+    
+    insert into oobl_log (ol_id, ol_type, ol_owner, ol_name, ol_op, ol_user, ol_date, ol_comment)
+    values (oobl_log_seq.nextval, v_type_obj, v_owner_obj, v_name_obj, 'COMPILE', sys_context('USERENV','CURRENT_USER'), sysdate, ora_sysevent);     
+
+end oobl_db_log_trg; 
+/
+
+
 create or replace trigger oob.oobl_db_trg
 before ddl
 on database
@@ -570,48 +614,5 @@ begin
     end;      
     
 end oobl_db_trg; 
-/
-
-create or replace trigger oob.oobl_db_log_trg
-after ddl
-on database
-declare
-   v_owner_obj varchar2(30);
-   v_name_obj varchar2(30);
-   v_type_obj varchar2(30);  
-   dummy number;
-begin
-
-    v_owner_obj := ora_dict_obj_owner;
-    v_name_obj := ora_dict_obj_name;
-    v_type_obj := ora_dict_obj_type;
-    
-    -- el esquema está registrado en oobl        
-    begin
-        select 1
-        into dummy
-        from oobl_schema
-        where os_schema = v_owner_obj;        
-    exception
-        when no_data_found then
-             return;
-    end;       
-       
-    -- el tipo está registrado y activo
-    begin
-        select 1
-        into dummy
-        from oobl_object
-        where oo_id = v_type_obj
-          and oo_active = 1;        
-    exception
-        when no_data_found then
-             return;
-    end;       
-    
-    insert into oobl_log (ol_id, ol_type, ol_owner, ol_name, ol_op, ol_user, ol_date, ol_comment)
-    values (oobl_log_seq.nextval, v_type_obj, v_owner_obj, v_name_obj, 'COMPILE', sys_context('USERENV','CURRENT_USER'), sysdate, ora_sysevent);     
-
-end oobl_db_log_trg; 
 /
 
