@@ -42,7 +42,7 @@ export class UserListComponent implements AfterViewInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.store.dispatch(new SetTitleRoute(this.translate.instant('header.title.users')));
+    this.store.dispatch(new SetTitleRoute('header.title.users'));
     this.getUsers('');
   }
 

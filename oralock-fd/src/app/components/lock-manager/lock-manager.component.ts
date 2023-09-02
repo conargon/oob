@@ -65,7 +65,7 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
       this.objectTypes$ = this.objectTypes$.filter(x => x.active);
     });
     this.userListService.list('', 'name', 'asc').subscribe(list => this.users=list);
-    this.store.dispatch(new SetTitleRoute(this.translate.instant('header.title.locks')));
+    this.store.dispatch(new SetTitleRoute('header.title.locks'));
     let usrParam = this.route.snapshot.paramMap.get('usr');
     if(usrParam) {
       this.selectedUser = usrParam;

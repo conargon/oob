@@ -75,7 +75,7 @@
       <td mat-cell *matCellDef="let element">
         <img [src]="'assets/object/'+element.icon" width="16px">
         <a routerLink="." queryParamsHandling="preserve" (click)="showLog(element)"
-          style="margin-left: 4px;">{{(element.label|translatedb) + ' ' + element.owner + '.' + element.name}}</a>
+          style="margin-left: 4px;" [style]="element.isBlocked ? 'color:red' : ''">{{(element.label|translatedb) + ' ' + element.owner + '.' + element.name}}</a>
       </td>
     </ng-container>
 

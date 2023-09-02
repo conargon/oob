@@ -1,8 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
 app-root {
@@ -39,11 +46,11 @@ form {
 }
 
 .btn-dialog {
-    margin-right:16px;
+    margin-right: 16px;
 }
 
 .btn-dialog-left {
-    margin-left:16px;
+    margin-left: 16px;
 }
 
 .mat-mdc-form-field {
@@ -52,11 +59,24 @@ form {
 
 .btnExcel {
     align-self: center;
-    margin: 16px;    
+    margin: 16px;
     cursor: pointer;
     color: gray;
- }
+}
 
- .white {
+.white {
     background: white;
- }
+}
+
+th {
+    background-color: rgb(51, 121, 222) !important;
+    color: white !important;
+}
+
+.mat-mdc-row:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+.mat-mdc-row:nth-child(odd) {
+    background-color: #ffffff;
+}

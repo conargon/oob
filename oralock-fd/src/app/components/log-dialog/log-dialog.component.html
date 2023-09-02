@@ -25,8 +25,13 @@
 
       <ng-container matColumnDef="username">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'user'|translate}} </th>
-        <td mat-cell *matCellDef="let element"> {{ element.username }} </td>
+        <td mat-cell *matCellDef="let element"> {{ element.username ? element.username : element.user }} </td>
       </ng-container>
+
+      <ng-container matColumnDef="ref_its">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'ref'|translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{ element.ref }} </td>
+      </ng-container>      
 
       <ng-container matColumnDef="comment">
         <th mat-header-cell *matHeaderCellDef> {{'comment'|translate}} </th>

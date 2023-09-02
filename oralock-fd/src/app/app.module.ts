@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatRippleModule } from '@angular/material/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RouterModule, Routes } from '@angular/router'
@@ -100,6 +101,7 @@ const routes: Routes = [
     MatSnackBarModule,
     MatProgressBarModule,
     MatTabsModule,
+    MatRippleModule,
     MatDialogModule,
     MatInputModule,
     TextFieldModule,

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
 import { LoginService } from 'src/app/service/login.service';
@@ -67,8 +67,8 @@ export class HeaderComponent {
   }
 
   about() {
-    this.confirmDialogService.showMessage(this.translate.instant('btnAbout.hint'), 
-        this.translate.instant('app.title') + ' ' + this.translate.instant('about.text', { 'year': new Date().getFullYear() }));
+    this.confirmDialogService.showMessage(this.translate.instant('btnAbout.hint'),
+      this.translate.instant('app.title') + ' ' + this.translate.instant('about.text', { 'year': new Date().getFullYear() }));
   }
 
 }

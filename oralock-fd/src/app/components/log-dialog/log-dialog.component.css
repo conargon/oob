@@ -8,11 +8,15 @@
 }
 
 .mat-column-username {
-    width: 25%;
+    width: 20%;
+}
+
+.mat-column-ref_its {
+    width: 10%;
 }
 
 .mat-column-comment {
-    width: 45%;
+    width: 40%;
     font-size: 0.8rem;
 }
 

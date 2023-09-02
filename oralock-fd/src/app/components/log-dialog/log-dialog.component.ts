@@ -22,7 +22,7 @@ export class LogDialogComponent implements AfterViewInit {
   @ViewChild("paginator") paginator!: MatPaginator;
 
   pathApi = environment._APIUrl;
-  displayedColumns: string[] = ['op', 'username', 'date', 'comment'];
+  displayedColumns: string[] = ['op', 'username', 'date', 'ref_its', 'comment'];
   dataSource = new MatTableDataSource<ObjectLog>();
   loading: boolean = false;
   currentSort!: string;

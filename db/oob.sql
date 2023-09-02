@@ -402,6 +402,16 @@ exception
 end get_traslated_msg;
 /
 
+create or replace procedure oob.save_ce_log(p_type_obj in varchar2, p_owner_obj in varchar2, p_name_obj in varchar2, p_user in varchar2, p_event in varchar2)
+is
+pragma autonomous_transaction;
+begin
+    insert into oobl_log (ol_id, ol_type, ol_owner, ol_name, ol_op, ol_user, ol_date, ol_comment)
+    values (oobl_log_seq.nextval, p_type_obj, p_owner_obj, p_name_obj, 'COMPILE-ERROR', p_user, sysdate, 'Op: ' || p_event);     
+    commit;
+end;
+/
+
 create or replace trigger oob.oobl_block_ciu
 for insert or update
 on oob.oobl_block 
@@ -606,6 +616,7 @@ begin
           and ob_name = v_name_obj;
         -- not allowed to alter a object locked by another user
         if v_user <> sys_context('USERENV','CURRENT_USER') then
+            save_ce_log(v_type_obj, v_owner_obj, v_name_obj, sys_context('USERENV','CURRENT_USER'), ora_sysevent);
             raise_application_error(-20021, get_traslated_msg('error.20021', v_name_obj, v_user));
         end if;
     exception
