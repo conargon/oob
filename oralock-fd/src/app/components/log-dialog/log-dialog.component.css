@@ -1,3 +1,7 @@
+table {
+    font-size: 0.8rem;
+}
+
 .mat-column-op {
     width: 15%;
 }
@@ -16,8 +20,7 @@
 }
 
 .mat-column-comment {
-    width: 40%;
-    font-size: 0.8rem;
+    width: 40%;    
 }
 
 .table-container {
@@ -29,3 +32,7 @@
     height: calc(100vh - 225px); 
     overflow: auto; 
  }
+
+ tr.mat-mdc-row:hover {
+    cursor: unset;
+}

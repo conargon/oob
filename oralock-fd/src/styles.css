@@ -77,6 +77,11 @@ th {
     background-color: #f1f1f1;
 }
 
+tr.mat-mdc-row:hover {
+    background-color: gainsboro !important;
+    cursor: pointer;
+}
+
 .mat-mdc-row:nth-child(odd) {
     background-color: #ffffff;
 }
