@@ -95,7 +95,8 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
     });        
   }
 
-  lockObject(o : OracleObject) {
+  lockObject(event: Event, o : OracleObject) {
+    event.stopPropagation();
     const options = {
       objectName: this.translationDbService.getTranslation(o.label) + ` ${o.owner}.${o.name}`,
     };    
@@ -129,7 +130,8 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
     });   
   }
 
-  unlockObject(o : OracleObject) {
+  unlockObject(event: Event, o : OracleObject) {
+    event.stopPropagation();
     const options = {
       title: this.translate.instant('unlock.object'),
       message: o.lock?.user!==this.currentUser.login.toUpperCase()

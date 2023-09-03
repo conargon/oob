@@ -58,6 +58,10 @@
     transition: opacity .2s;    
 }
 
+.lock-image:hover .lock-image-main {
+    opacity: 0;
+}
+
 .lock-image:hover .lock-image-overlay {
     opacity: 1;
 }

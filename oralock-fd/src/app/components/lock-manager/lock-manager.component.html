@@ -61,7 +61,7 @@
           <div class="lock-image"
             *ngIf="!element.isBlocked || element.lock.user==currentUser.login.toUpperCase() || currentUser.data.roleAdmin"
             [title]="element.isBlocked ? ('btn.unlock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name : ('btn.lock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name"
-            (click)=" element.isBlocked ? unlockObject(element) : lockObject(element)">
+            (click)=" element.isBlocked ? unlockObject($event, element) : lockObject($event, element)">
             <img class="lock-image-main"
               [src]="element.isBlocked ? 'assets/48x48/lock48.png' : 'assets/48x48/unlock48.png'" width="48px">
             <img class="lock-image-overlay"
