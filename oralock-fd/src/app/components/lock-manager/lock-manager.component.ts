@@ -1,9 +1,9 @@
-import { Component, AfterContentInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, AfterContentInit, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { LockmanagerService } from '../../service/lock-manager.service';
 import { Schema, OracleObject, ObjectType, Lock, UserApp, User } from '../../models';
 import { first } from 'rxjs/operators';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialogService } from '../../service/confirm-dialog.service';
 import { LockDialogService } from '../../service/lock-dialog.service';
 import { LogDialogService } from '../../service/log-dialog.service';
@@ -24,12 +24,12 @@ import { DateSpanishDatePipe } from 'src/app/helpers/dateSpanishDate.pipe';
   styleUrls: ['./lock-manager.component.css'],
 })
 
-export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
-  
+export class LockmanagerComponent implements AfterViewInit, AfterContentInit {
+
   @ViewChild("paginatorOracleObject") paginatorOracleObject!: MatPaginator;
 
   schemas$!: Schema[];
-  objectTypes$!: ObjectType[];  
+  objectTypes$!: ObjectType[];
   displayedColumns: string[] = ['lock', 'object', 'user', 'date', 'comment'];
   displayedColumnsMyLocks: string[] = ['object', 'date', 'comment', 'actions'];
   dataSourceOracleObject = new MatTableDataSource<OracleObject>();
@@ -39,23 +39,23 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
   selectedUser = '';
   loading: boolean = false;
   users!: UserApp[];
-  currentUser! :User;
+  currentUser!: User;
   currentSort!: string;
   currentDir!: string;
 
   constructor(private store: Store, private lockmanagerService: LockmanagerService, private confirmDialogService: ConfirmDialogService, private lockDialogService: LockDialogService,
-     private logDialogService: LogDialogService, private translate: TranslateService, private translationDbService: TranslationDbService, private userListService: UserListService,
-     private snackBarService: MatSnackBar, private route: ActivatedRoute, private excelService: ExcelService) {
-      this.store.select(state => state.user.user).subscribe(res => {
-        this.currentUser = res;
-        this.selectedUser = this.currentUser.data.id;
-     });
+    private logDialogService: LogDialogService, private translate: TranslateService, private translationDbService: TranslationDbService, private userListService: UserListService,
+    private snackBarService: MatSnackBar, private route: ActivatedRoute, private excelService: ExcelService) {
+    this.store.select(state => state.user.user).subscribe(res => {
+      this.currentUser = res;
+      this.selectedUser = this.currentUser.data.id;
+    });
   }
   ngAfterViewInit(): void {
     this.dataSourceOracleObject.paginator = this.paginatorOracleObject;
   }
 
-  ngAfterContentInit() {    
+  ngAfterContentInit() {
     this.store.select(state => state.schemas).subscribe(res => {
       this.schemas$ = res.schemas;
       this.schemas$ = this.schemas$.filter(x => x.isRegistered);
@@ -64,50 +64,54 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
       this.objectTypes$ = res.objecttypes;
       this.objectTypes$ = this.objectTypes$.filter(x => x.active);
     });
-    this.userListService.list('', 'name', 'asc').subscribe(list => this.users=list);
+    this.userListService.list('', 'name', 'asc').subscribe(list => this.users = list);
     this.store.dispatch(new SetTitleRoute('header.title.locks'));
     let usrParam = this.route.snapshot.paramMap.get('usr');
-    if(usrParam) {
+    if (usrParam) {
       this.selectedUser = usrParam;
     }
     this.getOracleObjects();
-  }  
+  }
 
-  getOracleObjects() {  
-   let username = this.selectedSchema ? this.selectedSchema.username : '';
-   let type = this.selectedType ? this.selectedType.id : '';
-   let name = this.selectedNombre ? this.selectedNombre : '';
-   let user = this.selectedUser ? this.selectedUser : '';
-   let sort = this.currentSort ? this.currentSort : '';
-   let dir = this.currentDir ? this.currentDir : '';
-   this.loading = true;
-   this.dataSourceOracleObject.data = [];
-   this.lockmanagerService.list(username, type, name, user, sort, dir).pipe(first()).subscribe({
-      next: (data) => { 
+  @HostListener("keydown.enter")
+  getOracleObjects() {
+    let username = this.selectedSchema ? this.selectedSchema.username : '';
+    let type = this.selectedType ? this.selectedType.id : '';
+    let name = this.selectedNombre ? this.selectedNombre : '';
+    let user = this.selectedUser ? this.selectedUser : '';
+    let sort = this.currentSort ? this.currentSort : '';
+    let dir = this.currentDir ? this.currentDir : '';
+    if(username=='' && type=='' && name=='' && user=='') {
+      return;
+    }
+    this.loading = true;
+    this.dataSourceOracleObject.data = [];
+    this.lockmanagerService.list(username, type, name, user, sort, dir).pipe(first()).subscribe({
+      next: (data) => {
         this.dataSourceOracleObject.data = data;
         this.loading = false;
       },
       error: (e) => {
         console.error(e);
         this.loading = false;
-        this.confirmDialogService.showError(this.translate.instant('error.msg', {error:e.error}));
+        this.confirmDialogService.showError(this.translate.instant('error.msg', { error: e.error }));
       }
-    });        
+    });
   }
 
-  lockObject(event: Event, o : OracleObject) {
+  lockObject(event: Event, o: OracleObject) {
     event.stopPropagation();
     const options = {
       objectName: this.translationDbService.getTranslation(o.label) + ` ${o.owner}.${o.name}`,
-    };    
-    this.lockDialogService.open(options);     
+    };
+    this.lockDialogService.open(options);
     this.lockDialogService.confirmed().subscribe(res => {
       if (res.confirmed) {
         let lock: Lock = {
           id: -1,
           owner: o.owner,
           name: o.name,
-          type: o.type,         
+          type: o.type,
           user: '',
           date: new Date(),
           comment: res.comment,
@@ -116,64 +120,64 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
           label: ''
         }
         this.lockmanagerService.lock(lock).subscribe({
-          next: (data) => { 
-            o.isBlocked=true;
-            o.lock=data;
-            this.snackBarService.open(this.translate.instant('lock.ok', {owner: o.owner, name: o.name}), "Info");
+          next: (data) => {
+            o.isBlocked = true;
+            o.lock = data;
+            this.snackBarService.open(this.translate.instant('lock.ok', { owner: o.owner, name: o.name }), "Info");
           },
           error: (e) => {
             console.error(e);
-            this.confirmDialogService.showError(this.translate.instant('lock.error', {owner: o.owner, name: o.name, error: e.error}));
-          }          
+            this.confirmDialogService.showError(this.translate.instant('lock.error', { owner: o.owner, name: o.name, error: e.error }));
+          }
         });
       }
-    });   
+    });
   }
 
-  unlockObject(event: Event, o : OracleObject) {
+  unlockObject(event: Event, o: OracleObject) {
     event.stopPropagation();
     const options = {
       title: this.translate.instant('unlock.object'),
-      message: o.lock?.user!==this.currentUser.login.toUpperCase()
-                ? this.translate.instant('unlock.other-user.question', {'owner':o.owner, 'name':o.name, 'user': o.lock?.user})
-                : this.translate.instant('unlock.question', {'owner':o.owner, 'name':o.name}),
+      message: o.lock?.user !== this.currentUser.login.toUpperCase()
+        ? this.translate.instant('unlock.other-user.question', { 'owner': o.owner, 'name': o.name, 'user': o.lock?.user })
+        : this.translate.instant('unlock.question', { 'owner': o.owner, 'name': o.name }),
       cancelText: this.translate.instant('no'),
       confirmText: this.translate.instant('yes'),
       confirmAction: true,
-    };    
-    this.confirmDialogService.open(options);     
+    };
+    this.confirmDialogService.open(options);
     this.confirmDialogService.confirmed().subscribe(confirmed => {
       if (confirmed) {
-          this.lockmanagerService.unlock(o.lock?.id).subscribe({
-            next: () => { 
-              o.isBlocked=false;
-              this.snackBarService.open(this.translate.instant('unlock.ok', {owner: o.owner, name: o.name}), "Info");
-            },
-            error: (e) => {
-              console.error(e);
-              this.confirmDialogService.showError(this.translate.instant('unlock.error', {owner: o.owner, name: o.name, error: e.error}));
-            }          
-          }); 
+        this.lockmanagerService.unlock(o.lock?.id).subscribe({
+          next: () => {
+            o.isBlocked = false;
+            this.snackBarService.open(this.translate.instant('unlock.ok', { owner: o.owner, name: o.name }), "Info");
+          },
+          error: (e) => {
+            console.error(e);
+            this.confirmDialogService.showError(this.translate.instant('unlock.error', { owner: o.owner, name: o.name, error: e.error }));
+          }
+        });
       }
-    });   
+    });
   }
 
-  showLog(o : OracleObject) {
+  showLog(o: OracleObject) {
     const options = {
       owner: o.owner,
       type: o.type,
       label: o.label,
-      name: o.name         
-    };    
-    this.logDialogService.open(options);     
-    this.logDialogService.confirmed().subscribe(res => {});  
+      name: o.name
+    };
+    this.logDialogService.open(options);
+    this.logDialogService.confirmed().subscribe(res => { });
   }
 
   announceSortChange(sortState: Sort) {
     this.currentSort = sortState.active;
     this.currentDir = sortState.direction;
-    if(this.currentDir=='') {
-      this.currentSort='';
+    if (this.currentDir == '') {
+      this.currentSort = '';
     }
     this.getOracleObjects();
   }
@@ -187,7 +191,7 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
     let dir = this.currentDir ? this.currentDir : '';
     this.loading = true;
     this.lockmanagerService.list(username, type, name, user, sort, dir).pipe(first()).subscribe({
-       next: (data) => { 
+      next: (data) => {
         let exportData = data.map(x => ({
           [this.translate.instant('owner')]: x.owner,
           [this.translate.instant('type')]: x.type,
@@ -197,15 +201,34 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit  {
           [this.translate.instant('date')]: new DateSpanishDatePipe().transform(x.lock?.date as Date, this.currentUser.data.lang),
           [this.translate.instant('ref_its')]: x.lock?.ref,
           [this.translate.instant('comment')]: x.lock?.comment
-         }));
-         this.excelService.exportAsExcelFile(exportData, `report_`);
-         this.loading = false;
-       },
-       error: (e) => {
-         console.error(e);
-         this.confirmDialogService.showError(this.translate.instant('error.msg', {error:e.error}));
-       }
-     });          
-}  
+        }));
+        this.excelService.exportAsExcelFile(exportData, `report_`);
+        this.loading = false;
+      },
+      error: (e) => {
+        console.error(e);
+        this.confirmDialogService.showError(this.translate.instant('error.msg', { error: e.error }));
+      }
+    });
+  }
+
+  clearFilter() {
+    this.selectedSchema = {
+      username: '',
+      isRegistered: false,
+      countLocks: 0
+    };    
+    this.selectedType={
+      id: '',
+      classType: '',
+      label: '',
+      order: 0,
+      icon: '',
+      active: false,
+      countLocks: 0
+    };
+    this.selectedNombre = '';
+    this.selectedUser = '';
+  }
 
 }

@@ -15,32 +15,36 @@
       <ng-container matColumnDef="op">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'op'|translate}} </th>
         <td mat-cell *matCellDef="let element"> {{element.opLabel|translatedb}} </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <ng-container matColumnDef="date">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'date'|translate}} </th>
-        <td mat-cell *matCellDef="let element"> {{element.date | dateSpanish:currentUser.data.lang}}
-        </td>
+        <td mat-cell *matCellDef="let element"> {{element.date | dateSpanish:currentUser.data.lang}}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <ng-container matColumnDef="username">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'user'|translate}} </th>
         <td mat-cell *matCellDef="let element"> {{ element.username ? element.username : element.user }} </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <ng-container matColumnDef="ref_its">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'ref'|translate}} </th>
-        <td mat-cell *matCellDef="let element"> {{ element.ref }} </td>
+        <td mat-cell *matCellDef="let element"> {{ element.ref }} </td>        
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>      
 
       <ng-container matColumnDef="comment">
         <th mat-header-cell *matHeaderCellDef> {{'comment'|translate}} </th>
         <td mat-cell *matCellDef="let element"> {{ element.comment }} </td>
+        <td mat-footer-cell *matFooterCellDef style="text-align:right;font-weight: bold;">{{ 'total.locks'|translate: {locks: countLocks, compiles: countCompiles, fails: countFails} }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
+      <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky:true" class="mat-elevation-z1"></tr>
     </table>
   </div>
 

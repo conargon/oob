@@ -13,9 +13,9 @@
             <mat-error *ngIf="myError('ref', 'maxlength')">{{'field.maxsize'|translate: {field: ('ref_its'|translate),
                 maxsize: 30} }}</mat-error>                       
         </mat-form-field>
-        <mat-form-field style="width: 640px; height: 320px;">
+        <mat-form-field style="width: 640px; height: 200px;">
             <mat-label>{{'comment'|translate}}</mat-label>
-            <textarea #textbox matInput cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="11"
+            <textarea #textbox matInput cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"
                 [value]="comment" (input)="comment = textbox.value;" required
                 formControlName="comment" id="comment"></textarea>
             <mat-hint>{{'lockdialog.comment.hint'|translate}}</mat-hint>
