@@ -26,7 +26,7 @@
     "objects": "Objects",
     "user": "User",
     "user.mandatory": "Username is mandatory",
-    "user.invalid": "Invalid username or password",
+    "user.invalid": "Login error: {{error}}",
     "password": "Password",
     "password.mandatory": "Password is mandatory",
     "date": "Date",
@@ -102,7 +102,7 @@
     "locked.by-user": "Locked by {{user}}",
     "options.title": "Options",
     "options.schemas.support": "Registered schemes",
-    "options.types.support": "schema types",    
+    "options.types.support": "Supported types",    
     "options.default.lang": "Default language",
     "options.save.ok": "Options saved with success",
     "options.save.error": "Error saving options: {{error}}",
@@ -115,5 +115,9 @@
     "profile.edit": "Edit {{username}}'s profile",
     "header.title.locks": "Locks",
     "header.title.users": "Users",
-    "export.xls": "Export to Excel"    
+    "header.title.log": "Historical",
+    "export.xls": "Export to Excel",
+    "options.schemas": "Schemes registered in the system",
+    "options.types": "Types registered in the system",
+    "options.lang": "Language of system messages"     
 }

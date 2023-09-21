@@ -4,8 +4,8 @@
     <span class="spacer"></span>
     <mat-icon class="window-icon" (click)="cancel()">close</mat-icon>
 </div>
-<div mat-dialog-content style="width: 640px;">
-    <form [formGroup]="userForm" novalidate>
+<form [formGroup]="userForm" novalidate>
+    <div class="content">
         <mat-form-field style="width: 320px;" *ngIf="isNewUser">
             <mat-label>{{'user.id'|translate}}</mat-label>
             <input #textid matInput type="text" [value]="user.id" (input)="user.id = textid.value;" formControlName="id"
@@ -55,23 +55,30 @@
                 </mat-option>
                 <mat-option value="en">
                     {{'lang.en'|translate}}
-                </mat-option>                                
+                </mat-option>
             </mat-select>
             <mat-error *ngIf="myError('lang', 'required')">{{'field.required'|translate: {field:
                 ('user.lang'|translate)} }}</mat-error>
-        </mat-form-field>     
-        <div *ngIf="user.enabled != null">
+        </mat-form-field>
+
+        <mat-hint *ngIf="!isNewUser && user.enabled != null">
             {{('user.enabled'|translate) + ': ' + (user.enabled | dateSpanishDate:currentUser.data.lang)}}
-        </div>  
-        <div *ngIf="user.disabled != null">
+        </mat-hint>
+        <mat-hint *ngIf="!isNewUser && user.disabled != null">
             {{('user.disabled'|translate) + ': ' + (user.disabled | dateSpanishDate:currentUser.data.lang)}}
-        </div>          
-    </form>
-</div>
-<div mat-dialog-actions>
-    <button mat-raised-button class="btn btn-primary btn-dialog-left" color="warn" *ngIf="user.disabled!=null && !isNewUser && user.id != currentUser.data.id" (click)="enable()"><mat-icon>check</mat-icon>{{'btn.enable'|translate}}</button>
-    <button mat-raised-button class="btn btn-primary btn-dialog-left" color="warn" *ngIf="user.disabled==null && !isNewUser && user.id != currentUser.data.id" (click)="disable()"><mat-icon>highlight_off</mat-icon>{{'btn.disable'|translate}}</button>
-    <span class="spacer"></span>
-    <button mat-raised-button class="btn btn-primary btn-dialog" (click)="confirm()" color="primary"><mat-icon>save</mat-icon>{{'save'|translate}}</button>
-    <button mat-raised-button class="btn btn-dialog" (click)="cancel()">{{'cancel'|translate}}</button>
-</div>
+        </mat-hint>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button class="btn btn-primary btn-dialog mr-4" color="warn"
+            *ngIf="user.disabled!=null && !isNewUser && user.id != currentUser.data.id"
+            (click)="enable()"><mat-icon>check</mat-icon>{{'btn.enable'|translate}}</button>
+        <button mat-raised-button class="btn btn-primary btn-dialog mr-4" color="warn"
+            *ngIf="user.disabled==null && !isNewUser && user.id != currentUser.data.id"
+            (click)="disable()"><mat-icon>highlight_off</mat-icon>{{'btn.disable'|translate}}</button>
+        <span class="spacer mx-4"></span>
+        <button mat-raised-button class="btn btn-primary btn-dialog ml-4" (click)="confirm()"
+            color="primary"><mat-icon>save</mat-icon>{{'save'|translate}}</button>
+        <button mat-raised-button class="btn" (click)="cancel()">{{'cancel'|translate}}</button>
+    </div>
+</form>
+

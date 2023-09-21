@@ -26,7 +26,7 @@
     "objects": "Objectes",
     "user": "Usuari",
     "user.mandatory": "El id d'usuari és obligatori",
-    "user.invalid": "Usuari o contrasenya invalides",
+    "user.invalid": "Error d'inici de sesió: {{error}}",
     "password": "Contrasenya",
     "password.mandatory": "La contrasenya és obligatòria",
     "date": "Data",
@@ -115,5 +115,9 @@
     "profile.edit": "Editar perfil de {{username}}",
     "header.title.locks": "Bloquejos",
     "header.title.users": "Usuaris",
-    "export.xls": "Exportar a un arxiu Excel"
+    "header.title.log": "Històric",
+    "export.xls": "Exportar a un arxiu Excel",
+    "options.schemas": "Esquemes registrats en el sistema",
+    "options.types": "Tipus registrats en el sistema",
+    "options.lang": "Idioma dels missatges del sistema"
 }

@@ -1,11 +1,12 @@
 .tab-content {
-    height: 400px;
+    height: 270px;
 }
 
 .select-list {
-    max-height: 340px;
+    max-height: 210px;
     padding: 16px;
     overflow: auto;
+    border: solid 1px gray;
 }
 
 .langItem {
@@ -15,4 +16,19 @@
 .check-select {
     margin-top: 16px;
     margin-left: 24px;
+}
+
+.check-select-label {
+    position: relative;
+    top: 4px;
+    font-style: italic;
+    white-space: nowrap;
+    max-width: 500px;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.mat-mdc-list-option-with-trailing-avatar .mdc-list-item__end {
+    border-radius: 0;
 }

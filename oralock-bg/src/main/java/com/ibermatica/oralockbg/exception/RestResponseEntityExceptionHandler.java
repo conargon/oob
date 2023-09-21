@@ -14,7 +14,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	
     @ExceptionHandler(value  = { BadCredentialsException.class })
     public ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "Unauthorizated";
+        String bodyOfResponse = ex.getMessage();
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 

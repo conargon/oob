@@ -1,0 +1,59 @@
+<div class="header">
+    <mat-icon class="mr-2">history</mat-icon>
+    <div style="font-weight: bold;">
+        {{'historical'|translate}}
+        {{(object.label|translatedb) + ' ' + object.owner + '.' + object.name}}
+    </div>
+</div>
+
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<div class="table-container mat-elevation-z8">
+
+    <table id="tableLog" mat-table matSort [dataSource]="dataSource" (matSortChange)="announceSortChange($event)">
+
+        <ng-container matColumnDef="op">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'op'|translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.opLabel|translatedb}} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'date'|translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.date | dateSpanish:currentUser.data.lang}}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'user'|translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.username ? element.username : element.user }} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="ref_its">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'ref'|translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.ref }} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+            <th mat-header-cell *matHeaderCellDef> {{'comment'|translate}} </th>
+            <td mat-cell *matCellDef="let element"> <span class="truncate" [title]="element.comment">{{ element.comment }}</span> </td>
+            <td mat-footer-cell *matFooterCellDef style="text-align:right;font-weight: bold;">{{
+                'total.locks'|translate: {locks: countLocks, compiles: countCompiles, fails: countFails} }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showLog(row)"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky:true" class="mat-elevation-z1"></tr>
+    </table>
+</div>
+
+<div class="d-flex flex-column flex-md-row mat-elevation-z8">
+    <div class="white" *ngIf="dataSource.data.length > 0">
+        <mat-icon class="btnExcel" (click)="excel()" [title]="'export.xls'|translate">save_alt</mat-icon>
+    </div>
+    <span class="spacer white"></span>
+    <mat-paginator #paginator="matPaginator" [pageSizeOptions]="[5, 10, 15, 20]" [pageSize]="10" showFirstLastButtons>
+    </mat-paginator>
+</div>

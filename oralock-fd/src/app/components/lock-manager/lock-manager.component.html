@@ -1,6 +1,6 @@
 <mat-toolbar class="mat-elevation-z8">
 
-  <mat-form-field subscriptSizing="dynamic" class="ml-4">
+  <mat-form-field subscriptSizing="dynamic" class="ml-4 mb-0">
     <mat-label>{{'schema'|translate}}</mat-label>
     <mat-select appearance="outline" [(value)]="selectedSchema">
       <mat-option>{{'none'|translate}}</mat-option>
@@ -8,7 +8,7 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field subscriptSizing="dynamic" class="ml-4" style="width: 320px;">
+  <mat-form-field subscriptSizing="dynamic" class="ml-4 mb-0" style="width: 320px;">
     <mat-label>{{'type'|translate}}</mat-label>
     <mat-select appearance="outline" [(value)]="selectedType">
       <mat-option>{{'none'|translate}}</mat-option>
@@ -19,7 +19,7 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field subscriptSizing="dynamic" class="ml-4" style="width: 320px;">
+  <mat-form-field subscriptSizing="dynamic" class="ml-4 mb-0" style="width: 320px;">
     <mat-label>{{'locked.by'|translate}}</mat-label>
     <mat-select appearance="outline" [(value)]="selectedUser">
       <mat-option>{{'none'|translate}}</mat-option>
@@ -81,29 +81,42 @@
     <ng-container matColumnDef="object">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'object'|translate}}</th>
       <td mat-cell *matCellDef="let element">
-        <img [src]="'assets/object/'+element.icon" width="16px">
-        <span style="margin-left: 4px;"
-          [style]="element.isBlocked ? 'font-weight:550;' : ''">{{(element.isBlocked ? '*': '') +
-          (element.label|translatedb) + ' ' + element.owner + '.' + element.name}}</span>
+        <div style="display: flex; flex-direction: row;"
+          [title]="(element.label|translatedb) + ' ' + element.owner + '.' + element.name + (element.isBlocked ? ' (' + ('locked'|translate) + ')' : '')">
+          <img [src]="'assets/object/'+element.icon" width="16px" height="16px" style="align-self: center;">
+          <div style="margin-left: 8px;" [style]="element.isBlocked ? 'font-weight:550;' : ''">
+            <div>
+              <span>{{(element.isBlocked ? '*': '') + (element.label|translatedb)}}</span>
+            </div>
+            <div>
+              <span>{{element.owner + '.' + element.name}}</span>
+            </div>
+          </div>
+        </div>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="user">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'user'|translate}}</th>
-      <td mat-cell *matCellDef="let element"> {{element.isBlocked ? element.lock.username : ''}} </td>
+      <td mat-cell *matCellDef="let element"><span class="truncate" [title]="element.isBlocked ? element.lock.username :
+        ''"> {{element.isBlocked ? element.lock.username : ''}}</span> </td>
     </ng-container>
 
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'date'|translate}}</th>
       <td mat-cell *matCellDef="let element">
-        <div>{{element.isBlocked ? (element.lock.date | dateSpanish:currentUser.data.lang) : ''}}</div>
-        <div>{{element.isBlocked ? '(' + (element.lock.date | lapse) + ')' : ''}}</div>
+        <div [title]="element.isBlocked ? (element.lock.date | dateSpanish:currentUser.data.lang) + ' (' + (element.lock.date | lapse) + ')' : ''">
+          <div>{{element.isBlocked ? (element.lock.date | dateSpanish:currentUser.data.lang) : ''}}</div>
+          <div class="truncate">
+            {{element.isBlocked ? '(' + (element.lock.date | lapse) + ')' : ''}}</div>
+        </div>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="comment">
       <th mat-header-cell *matHeaderCellDef>{{'comment'|translate}}</th>
-      <td mat-cell *matCellDef="let element"><span class="comment">{{element.isBlocked ? element.lock.comment :
+      <td mat-cell *matCellDef="let element"><span class="comment truncate" [title]="element.isBlocked ? element.lock.comment :
+        ''">{{element.isBlocked ? element.lock.comment :
           ''}}</span></td>
     </ng-container>
 

@@ -9,6 +9,7 @@ import { DefaultLangService } from 'src/app/service/default-lang.service';
 import { ObjectTypeService } from 'src/app/service/object-type.service';
 import { OptionsService } from 'src/app/service/options.service';
 import { SchemaService } from 'src/app/service/schema.service';
+import { TranslationDbService } from 'src/app/service/translationdb.service';
 
 @Component({
   selector: 'app-options-dialog',
@@ -29,6 +30,7 @@ export class OptionsDialogComponent implements OnInit {
     private objectTypeService: ObjectTypeService,
     private optionService: OptionsService,
     private translate: TranslateService,
+    private translationDbService: TranslationDbService,
     private defaultLangService: DefaultLangService,
     private _snackBar: MatSnackBar,
     private confirmDialogService: ConfirmDialogService,
@@ -96,6 +98,14 @@ export class OptionsDialogComponent implements OnInit {
     } else {
       this.selectedTypes = this.types.filter(t => t.countLocks > 0);;
     }
+  }
+
+  schemasSelectedList(): string {
+    return this.selectedShemas.map(x => x.username).join(', ')
+  }
+
+  typesSelectedList(): string {
+    return this.selectedTypes.map(x => this.translationDbService.getTranslationPlural(x.label) ).join(', ')
   }
 
 }

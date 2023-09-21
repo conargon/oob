@@ -10,3 +10,4 @@ export * from './userApp';
 export * from './option';
 export * from './optionsApp';
 export * from './userFormResult';
+export * from './managerFilter';

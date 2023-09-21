@@ -26,7 +26,7 @@
     "objects": "Objetos",
     "user": "Usuario",
     "user.mandatory": "El id de usuario es obligatorio",
-    "user.invalid": "Usuario o contraseña invalidas",
+    "user.invalid": "Error de inicio de sesión: {{error}}",
     "password": "Contraseña",
     "password.mandatory": "La contraseña es obligatoria",
     "date": "Fecha",
@@ -115,6 +115,9 @@
     "profile.edit": "Editar perfil de {{username}}",
     "header.title.locks": "Bloqueos",
     "header.title.users": "Usuarios",
-    "export.xls": "Exportar a un archivo Excel"
-
+    "header.title.log": "Histórico",
+    "export.xls": "Exportar a un archivo Excel",
+    "options.schemas": "Esquemas registrados en el sistema",
+    "options.types": "Tipos de objeto soportados por el sistema",
+    "options.lang": "Idioma de los mensajes del sistema"
 }

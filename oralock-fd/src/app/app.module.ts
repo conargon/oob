@@ -30,16 +30,17 @@ import {MatCardModule} from '@angular/material/card';
 import {TextFieldModule} from '@angular/cdk/text-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatSortModule} from '@angular/material/sort';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { LockDialogComponent } from './components/lock-dialog/lock-dialog.component';
+import { LogDialogComponent } from './components/log-dialog/log-dialog.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LockmanagerComponent } from './components/lock-manager/lock-manager.component';
 import { LoginService } from './service/login.service';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
-import { LogDialogComponent } from './components/log-dialog/log-dialog.component';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
@@ -56,6 +57,8 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 import { OptionsDialogComponent } from './components/options-dialog/options-dialog.component';
 import { TitleRouteState } from './store/title-route/title-route.state';
 import { ExcelService } from './service/excel.service';
+import { LogListComponent } from './components/log-list/log-list.component';
+import { ManagerFilterState } from './store/manager-filter/manager-filter.state';
 
 
 const routes: Routes = [
@@ -63,6 +66,7 @@ const routes: Routes = [
   { path: 'lockmanager', redirectTo: 'lockmanager/', pathMatch: 'full' },
   { path: "login", component: LoginComponent, data: { animation: 'Two' } },
   { path: "users", component: UserListComponent, canActivate: [AuthGuard], data: { animation: 'Three' }},
+  { path: "log", component: LogListComponent, canActivate: [AuthGuard], data: { animation: 'Three' }},
   { path: '', redirectTo: 'lockmanager/', pathMatch: 'full' },
 ]
 
@@ -78,11 +82,12 @@ const routes: Routes = [
     LockDialogComponent,
     LoginComponent,
     LockmanagerComponent,
-    LogDialogComponent,
     HeaderComponent,
     UserListComponent,
     UserFormComponent,
-    OptionsDialogComponent
+    OptionsDialogComponent,
+    LogDialogComponent,
+    LogListComponent
   ],
   imports: [
     BrowserModule,
@@ -107,6 +112,7 @@ const routes: Routes = [
     TextFieldModule,
     MatMenuModule,
     MatSortModule,
+    MatExpansionModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,    
@@ -117,7 +123,7 @@ const routes: Routes = [
           deps: [HttpClient]
         }
     }),    
-    NgxsModule.forRoot([UserState, ObjectTypeState, SchemaState, TranslationState, TitleRouteState],
+    NgxsModule.forRoot([UserState, ObjectTypeState, SchemaState, TranslationState, TitleRouteState, ManagerFilterState],
       { developmentMode: !environment.production }
     ),
     NgxsReduxDevtoolsPluginModule.forRoot({

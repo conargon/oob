@@ -12,6 +12,7 @@ import { ObjectTypeService } from './object-type.service';
 import { SchemaService } from './schema.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DefaultLangService } from './default-lang.service';
+import { SetUserManagerFilter } from '../store/manager-filter/manager-filter.actions';
 
 @Injectable()
 export class LoginService {
@@ -48,6 +49,7 @@ export class LoginService {
             }
           }                   
           this.store.dispatch(new SetUser(user));
+          this.store.dispatch(new SetUserManagerFilter(resp.user.id));
           this.translate.use(resp.user.lang); 
           this.translateDb.loadStore(resp.user.lang);
           this.defaultLangService.load();

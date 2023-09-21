@@ -12,27 +12,32 @@
         <mat-tab [label]="'options.schemas.support'|translate">
             <div class="tab-content">
                 <mat-checkbox class="check-select" (change)="changeSchemaList($event)" checked="true"
-                    color="primary"></mat-checkbox>
+                    color="accent">
+                    <span class="check-select-label" [title]="schemasSelectedList()">{{ schemasSelectedList() }}</span>
+                </mat-checkbox>
                 <mat-divider></mat-divider>
                 <div class="select-list">
-                    <mat-selection-list #schemaList [(ngModel)]="selectedShemas">
+                    <mat-selection-list #schemaList [(ngModel)]="selectedShemas" color="primary" class="mat-elevation-z1">
                         <mat-list-option *ngFor="let schema of schemas" togglePosition="before" [value]="schema"
                             [disabled]="schema.countLocks > 0">
                             <span matListItemTitle>{{schema.username}}</span>
                             <span matListItemLine *ngIf="schema.countLocks > 0">{{schema.countLocks + ' ' +
                                 ('locks'|translate)}}</span>
                         </mat-list-option>
-                    </mat-selection-list>
+                    </mat-selection-list>                    
                 </div>
             </div>
+            <mat-hint>{{'options.schemas'|translate}}</mat-hint>
         </mat-tab>
         <mat-tab [label]="'options.types.support'|translate">
             <div class="tab-content">
                 <mat-checkbox class="check-select" (change)="changeTypesList($event)" checked="true"
-                    color="primary"></mat-checkbox>
+                    color="accent">
+                    <span class="check-select-label" [title]="typesSelectedList()">{{ typesSelectedList() }}</span>
+                </mat-checkbox>
                 <mat-divider></mat-divider>
                 <div class="select-list">
-                    <mat-selection-list #typeList [(ngModel)]="selectedTypes">
+                    <mat-selection-list #typeList [(ngModel)]="selectedTypes" color="primary">
                         <mat-list-option *ngFor="let type of types" [disabled]="type.countLocks > 0"
                             togglePosition="before" [value]="type">
                             <img matListItemAvatar [src]="'assets/object/'+type.icon" width="16px">
@@ -43,10 +48,11 @@
                     </mat-selection-list>
                 </div>
             </div>
+            <mat-hint>{{'options.types'|translate}}</mat-hint>
         </mat-tab>
         <mat-tab [label]="'options.default.lang'|translate">
             <div class="tab-content" style="padding: 16px;">
-                <mat-selection-list #langList [multiple]="false" [(ngModel)]="selectedLang">
+                <mat-selection-list #langList [multiple]="false" [(ngModel)]="selectedLang" class="select-list">
                     <mat-list-option [selected]="defaultLang == 'es'" togglePosition="before" value="es">
                         <img matListItemAvatar src="assets/flags/flag-es.png" alt="Flag Icon" />
                         <span matListItemTitle>{{'lang.es'|translate}}</span>
@@ -60,6 +66,7 @@
                         <span matListItemTitle>{{'lang.en'|translate}}</span>
                     </mat-list-option>
                 </mat-selection-list>
+                <mat-hint>{{'options.lang'|translate}}</mat-hint>
             </div>
         </mat-tab>
     </mat-tab-group>

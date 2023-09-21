@@ -60,11 +60,12 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["lockmanager"])
         },
         error: (e) => {
+          console.error(e)
           this.loading = false;  
           if(e.status == 401) {
-            this.snackBar.open(this.translate.instant('user.invalid'), this.translate.instant('error'), { duration: 3000 })
+            this.snackBar.open(this.translate.instant('user.invalid', {error: e.error}), this.translate.instant('error'), { duration: 5000 })
           }  else {
-            this.snackBar.open(this.translate.instant('error.msg',  {error: e.error}), this.translate.instant('error'), { duration: 3000 })
+            this.snackBar.open(this.translate.instant('error.msg', {error: e.error}), this.translate.instant('error'), { duration: 5000 })
           }
         },
       //  complete: () => console.info('login complete') 

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.ibermatica.oralockbg.common.ResultMsg;
 import com.ibermatica.oralockbg.dto.UserDto;
 import com.ibermatica.oralockbg.mapper.UserMapper;
 import com.ibermatica.oralockbg.model.User;
@@ -19,6 +20,7 @@ import com.ibermatica.oralockbg.repository.UserRepository;
 import com.ibermatica.oralockbg.security.JwtTokenUtil;
 import com.ibermatica.oralockbg.security.UserPrincipal;
 import com.ibermatica.oralockbg.service.AuthenticateService;
+import com.ibermatica.oralockbg.service.MessageService;
 
 @Service
 public class AuthenticateServiceImpl implements AuthenticateService {
@@ -37,18 +39,22 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+	
+	@Autowired
+	private MessageService messageService;
 
 	@Override
 	public UserDto authenticate(String username, String password) {
-		if (!testConnection(username, password)) {
-			throw new BadCredentialsException("Unauthorizated");
+		ResultMsg r = testConnection(username, password);
+		if (r.isError()) {
+			throw new BadCredentialsException(String.format(messageService.getMessage("error.login.connection"), r.getMsg()));
 		}
 		User u = userRepository.findOne(username.toUpperCase());
 		if (u == null) {
-			throw new BadCredentialsException("Unauthorizated");
+			throw new BadCredentialsException(messageService.getMessage("error.login.user-not-registered"));
 		}
 		if (u.getDisabled() != null) {
-			throw new BadCredentialsException("Unauthorizated");
+			throw new BadCredentialsException(messageService.getMessage("error.login.user-disabled"));
 		}
 		return userMapper.toDto(u);
 	}
@@ -60,7 +66,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 		return u;
 	}
 
-	private boolean testConnection(String username, String password) {
+	private ResultMsg testConnection(String username, String password) {
 		try {
 			Class.forName(driver);
 			Connection con = DriverManager.getConnection(url, username, password);
@@ -71,9 +77,9 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 			st.close();
 			con.close();
 		} catch (Exception e) {
-			return false;
+			return new ResultMsg(false, e.getMessage());
 		}
-		return true;
+		return new ResultMsg(true);
 	}
 
 	@Override
