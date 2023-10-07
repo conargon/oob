@@ -122,6 +122,6 @@
     "export.xls": "Exportar a un arxiu Excel",
     "options.schemas": "Esquemes registrats en el sistema",
     "options.types": "Tipus registrats en el sistema",
-    "options.ops": "Operacions registrats en el sistema",
+    "options.ops": "Operacions registrats en el històric d'objectes",
     "options.lang": "Idioma dels missatges del sistema"
 }

@@ -122,6 +122,6 @@
     "export.xls": "Export to Excel",
     "options.schemas": "Schemes registered in the system",
     "options.types": "Types registered in the system",
-    "options.ops": "Operations registered in the system",
+    "options.ops": "Operations registered in the historical of objects",
     "options.lang": "Language of system messages"     
 }
