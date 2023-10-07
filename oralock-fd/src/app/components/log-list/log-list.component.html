@@ -15,7 +15,11 @@
         <ng-container matColumnDef="op">
             <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'op'|translate}} </th>
             <td mat-cell *matCellDef="let element"> {{element.opLabel|translatedb}} </td>
-            <td mat-footer-cell *matFooterCellDef></td>
+            <td mat-footer-cell *matFooterCellDef>
+                <button mat-flat-button color="primary" (click)="volver()" class="ml-2" [title]="'btnLocks.hint'|translate">
+                    {{'btn.back'|translate}}
+                  </button>                
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="date">
@@ -39,8 +43,9 @@
         <ng-container matColumnDef="comment">
             <th mat-header-cell *matHeaderCellDef> {{'comment'|translate}} </th>
             <td mat-cell *matCellDef="let element"> <span class="truncate" [title]="element.comment">{{ element.comment }}</span> </td>
-            <td mat-footer-cell *matFooterCellDef style="text-align:right;font-weight: bold;">{{
-                'total.locks'|translate: {locks: countLocks, compiles: countCompiles, fails: countFails} }}</td>
+            <td mat-footer-cell *matFooterCellDef>
+                <div style="text-align:right;font-weight: bold;">{{'total.locks'|translate: {locks: countLocks, compiles: countCompiles, fails: countFails} }}</div>
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>

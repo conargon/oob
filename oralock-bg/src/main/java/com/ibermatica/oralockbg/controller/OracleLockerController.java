@@ -26,6 +26,7 @@ import com.ibermatica.oralockbg.dto.OracleObjectDto;
 import com.ibermatica.oralockbg.dto.RoleDto;
 import com.ibermatica.oralockbg.dto.TranslationDto;
 import com.ibermatica.oralockbg.dto.UserDto;
+import com.ibermatica.oralockbg.model.Operation;
 import com.ibermatica.oralockbg.model.Option;
 import com.ibermatica.oralockbg.model.RegisteredSchema;
 import com.ibermatica.oralockbg.model.Schema;
@@ -33,6 +34,7 @@ import com.ibermatica.oralockbg.service.AuthenticateService;
 import com.ibermatica.oralockbg.service.LockService;
 import com.ibermatica.oralockbg.service.ObjectLogService;
 import com.ibermatica.oralockbg.service.ObjectTypeService;
+import com.ibermatica.oralockbg.service.OperationService;
 import com.ibermatica.oralockbg.service.OptionService;
 import com.ibermatica.oralockbg.service.OracleObjectService;
 import com.ibermatica.oralockbg.service.RegisteredSchemaService;
@@ -79,6 +81,9 @@ public class OracleLockerController {
 	
 	@Autowired
 	private OptionService optionService;
+	
+	@Autowired
+	private OperationService operationService;
 	
 	@GetMapping("/schemas")
 	public List<Schema> getSchemas() {
@@ -153,7 +158,7 @@ public class OracleLockerController {
 	}	
 	
 	@GetMapping("/registeredSchemas")
-	public List<RegisteredSchema> geRegisteredSchemas() {
+	public List<RegisteredSchema> getRegisteredSchemas() {
 		return registeredSchemaService.getList();
 	}
 	
@@ -166,5 +171,11 @@ public class OracleLockerController {
 	public void saveOptions(@Valid @RequestBody OptionsDTO options, @RequestHeader (name="Authorization") String authorization) {
 		optionService.save(options, authenticateService.getCurrentUser(authorization));
 	}
+	
+	@GetMapping("/ops")
+	public List<Operation> getOps() {
+		return operationService.list();
+	}	
+
 	
 }

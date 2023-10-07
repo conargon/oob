@@ -3,10 +3,11 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { ObjectType, OptionsApp, Schema } from 'src/app/models';
+import { ObjectType, OptionsApp, Schema, Op } from 'src/app/models';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
 import { DefaultLangService } from 'src/app/service/default-lang.service';
 import { ObjectTypeService } from 'src/app/service/object-type.service';
+import { OpService } from 'src/app/service/op.service';
 import { OptionsService } from 'src/app/service/options.service';
 import { SchemaService } from 'src/app/service/schema.service';
 import { TranslationDbService } from 'src/app/service/translationdb.service';
@@ -22,6 +23,8 @@ export class OptionsDialogComponent implements OnInit {
   selectedShemas!: Schema[];
   types!: ObjectType[];
   selectedTypes!: ObjectType[];
+  ops!: Op[];
+  selectedOps!: Op[];
   defaultLang!: string;
   selectedLang!: string[];
 
@@ -29,6 +32,7 @@ export class OptionsDialogComponent implements OnInit {
     private schemaService: SchemaService,
     private objectTypeService: ObjectTypeService,
     private optionService: OptionsService,
+    private opService: OpService,
     private translate: TranslateService,
     private translationDbService: TranslationDbService,
     private defaultLangService: DefaultLangService,
@@ -47,6 +51,10 @@ export class OptionsDialogComponent implements OnInit {
       this.types = list;
       this.selectedTypes = this.types.filter(x => x.active);
     });
+    this.opService.list().subscribe((list) => {
+      this.ops = list;
+      this.selectedOps = this.ops.filter(x => x.log);
+    });    
     this.defaultLang = this.translate.defaultLang;
     this.selectedLang=[];
     this.selectedLang.push(this.defaultLang);
@@ -56,6 +64,7 @@ export class OptionsDialogComponent implements OnInit {
     let optionsData: OptionsApp = {
       schemas: this.selectedShemas.map(s => s.username), 
       types: this.selectedTypes.map(t => t.id),
+      ops: this.selectedOps.map(t => t.id),
       options: [{
         id: 'default.lang',
         value: this.selectedLang[0],
@@ -96,7 +105,15 @@ export class OptionsDialogComponent implements OnInit {
     if(event.checked) {
       this.selectedTypes = this.types;
     } else {
-      this.selectedTypes = this.types.filter(t => t.countLocks > 0);;
+      this.selectedTypes = this.types.filter(t => t.countLocks > 0);
+    }
+  }
+
+  changeOpsList(event: MatCheckboxChange) {
+    if(event.checked) {
+      this.selectedOps = this.ops;
+    } else {
+      this.selectedOps = [];
     }
   }
 
@@ -106,6 +123,10 @@ export class OptionsDialogComponent implements OnInit {
 
   typesSelectedList(): string {
     return this.selectedTypes.map(x => this.translationDbService.getTranslationPlural(x.label) ).join(', ')
+  }
+
+  opsSelectedList(): string {
+    return this.selectedOps.map(x => this.translationDbService.getTranslation(x.name) ).join(', ')
   }
 
 }

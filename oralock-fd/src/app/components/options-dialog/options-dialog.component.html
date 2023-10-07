@@ -50,6 +50,24 @@
             </div>
             <mat-hint>{{'options.types'|translate}}</mat-hint>
         </mat-tab>
+        <mat-tab [label]="'options.ops.support'|translate">
+            <div class="tab-content">
+                <mat-checkbox class="check-select" (change)="changeOpsList($event)" checked="true"
+                    color="accent">
+                    <span class="check-select-label" [title]="opsSelectedList()">{{ opsSelectedList() }}</span>
+                </mat-checkbox>
+                <mat-divider></mat-divider>
+                <div class="select-list">
+                    <mat-selection-list #opList [(ngModel)]="selectedOps" color="primary">
+                        <mat-list-option *ngFor="let op of ops"
+                            togglePosition="before" [value]="op">
+                            <span matListItemTitle>{{op.name|translatedb}}</span>
+                        </mat-list-option>
+                    </mat-selection-list>
+                </div>
+            </div>
+            <mat-hint>{{'options.ops'|translate}}</mat-hint>
+        </mat-tab>        
         <mat-tab [label]="'options.default.lang'|translate">
             <div class="tab-content" style="padding: 16px;">
                 <mat-selection-list #langList [multiple]="false" [(ngModel)]="selectedLang" class="select-list">

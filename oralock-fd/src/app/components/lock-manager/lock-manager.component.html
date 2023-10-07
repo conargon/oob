@@ -64,6 +64,7 @@
     <ng-container matColumnDef="lock">
       <th mat-header-cell *matHeaderCellDef>{{'locked'|translate}}</th>
       <td mat-cell *matCellDef="let element">
+        <!--
         <img src="assets/48x48/lock48_disabled.png" [title]="'locked.by-user'|translate: {user: element.lock.user}"
           *ngIf="element.isBlocked && element.lock.user!==currentUser.login.toUpperCase() && !currentUser.data.roleAdmin" />
         <div class="lock-image"
@@ -73,8 +74,10 @@
           <img class="lock-image-main"
             [src]="element.isBlocked ? 'assets/48x48/lock48.png' : 'assets/48x48/unlock48.png'" width="48px">
           <img class="lock-image-overlay"
-            [src]="element.isBlocked ? 'assets/48x48/unlock48.png' : 'assets/48x48/lock48.png'" width="48px">
+            [src]="element.isBlocked ? 'assets/48x48/unlock48.png' : 'assets/48x48/lock48.png'" width="48px">      
         </div>
+      -->
+      <img src="assets/48x48/lock48.png" width="48px" *ngIf="element.isBlocked" [title]="'locked.by-user'|translate: {user: element.lock.user}">      
       </td>
     </ng-container>
 
@@ -105,7 +108,8 @@
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'date'|translate}}</th>
       <td mat-cell *matCellDef="let element">
-        <div [title]="element.isBlocked ? (element.lock.date | dateSpanish:currentUser.data.lang) + ' (' + (element.lock.date | lapse) + ')' : ''">
+        <div
+          [title]="element.isBlocked ? (element.lock.date | dateSpanish:currentUser.data.lang) + ' (' + (element.lock.date | lapse) + ')' : ''">
           <div>{{element.isBlocked ? (element.lock.date | dateSpanish:currentUser.data.lang) : ''}}</div>
           <div class="truncate">
             {{element.isBlocked ? '(' + (element.lock.date | lapse) + ')' : ''}}</div>
@@ -120,8 +124,26 @@
           ''}}</span></td>
     </ng-container>
 
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{'btn.actions'|translate}}</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="actions">
+          <button mat-flat-button [color]="element.isBlocked ? 'primary' : 'accent'"
+            style="min-width: 125px"
+            [disabled]="element.isBlocked && element.lock.user!==currentUser.login.toUpperCase() && !currentUser.data.roleAdmin"
+            (click)="element.isBlocked ? unlockObject($event, element) : lockObject($event, element)"
+            [title]="element.isBlocked ? ('btn.unlock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name : ('btn.lock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name">
+            {{element.isBlocked ? ('btn.unlock'|translate) : ('btn.lock'|translate)}}
+          </button>
+          <button mat-flat-button color="primary" (click)="showLog(element)" class="ml-2" [title]="('historical'|translate) + ' ' + element.owner + '.' + element.name">
+            {{'historical'|translate}}
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showLog(row)"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
 </div>

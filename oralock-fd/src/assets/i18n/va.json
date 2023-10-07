@@ -39,6 +39,8 @@
     "btn.edit": "Editar",
     "btn.enable": "Activar",
     "btn.disable": "Desactivar",
+    "btn.actions": "Accions",
+    "btn.back": "Retornar",
     "my.locks": "Els meus bloquejos",
     "locks": "Bloquejos",
     "total.locks": "Total Bloquejos: {{locks}} Total Compilacions: {{compiles}} Total Falladess: {{fails}}",
@@ -103,6 +105,7 @@
     "options.title": "Opcions",
     "options.schemas.support": "Esquemes registrats",
     "options.types.support": "Tipus suportats",    
+    "options.ops.support": "Operacions registrades",
     "options.default.lang": "Idioma per defecte",
     "options.save.ok": "Opcions guardades amb èxit",
     "options.save.error": "Error en guardar les opcions: {{error}}",
@@ -119,5 +122,6 @@
     "export.xls": "Exportar a un arxiu Excel",
     "options.schemas": "Esquemes registrats en el sistema",
     "options.types": "Tipus registrats en el sistema",
+    "options.ops": "Operacions registrats en el sistema",
     "options.lang": "Idioma dels missatges del sistema"
 }

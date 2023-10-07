@@ -30,7 +30,7 @@ export class LockmanagerComponent implements AfterViewInit, AfterContentInit {
 
   schemas$!: Schema[];
   objectTypes$!: ObjectType[];
-  displayedColumns: string[] = ['lock', 'object', 'user', 'date', 'comment'];
+  displayedColumns: string[] = ['lock', 'object', 'user', 'date', 'comment', 'actions'];
   displayedColumnsMyLocks: string[] = ['object', 'date', 'comment', 'actions'];
   dataSourceOracleObject = new MatTableDataSource<OracleObject>();
   selectedSchema!: Schema;

@@ -14,9 +14,11 @@ import com.ibermatica.oralockbg.exception.OobException;
 import com.ibermatica.oralockbg.mapper.LockMapper;
 import com.ibermatica.oralockbg.model.Lock;
 import com.ibermatica.oralockbg.model.ObjectLog;
+import com.ibermatica.oralockbg.model.Operation;
 import com.ibermatica.oralockbg.model.User;
 import com.ibermatica.oralockbg.repository.LockRepository;
 import com.ibermatica.oralockbg.repository.ObjectLogRepository;
+import com.ibermatica.oralockbg.repository.OperationRepository;
 import com.ibermatica.oralockbg.service.LockService;
 import com.ibermatica.oralockbg.service.MessageService;
 
@@ -28,6 +30,9 @@ public class LockServiceImpl implements LockService {
 	
 	@Autowired
 	private ObjectLogRepository objectLogRepository;
+	
+	@Autowired
+	private OperationRepository operationRepository;
 		
 	@Autowired
 	private LockMapper lockMapper;	
@@ -49,16 +54,21 @@ public class LockServiceImpl implements LockService {
 			lock.setComment(lockDto.getComment() != null && !"".equals(lockDto.getComment()) ? lockDto.getComment() : "------");
 			lock.setRef(lockDto.getRef());
 			LockDto result = lockMapper.toDto( lockRepository.save(lock) );
-			ObjectLog log = new ObjectLog();
-			log.setType(result.getType());
-			log.setOwner(result.getOwner());
-			log.setName(result.getName());
-			log.setUser(currentUser.getId());
-			log.setDate(new Date());
-			log.setComment(result.getComment());
-			log.setRef(result.getRef());
-			log.setIdOperation(Constants.OP_LOCK);
-			objectLogRepository.save(log);
+			
+			Operation op = operationRepository.findOne(Constants.OP_LOCK);
+			if(op.getLog()) {
+				ObjectLog log = new ObjectLog();
+				log.setType(result.getType());
+				log.setOwner(result.getOwner());
+				log.setName(result.getName());
+				log.setUser(currentUser.getId());
+				log.setDate(new Date());
+				log.setComment(result.getComment());
+				log.setRef(result.getRef());
+				log.setIdOperation(Constants.OP_LOCK);
+				objectLogRepository.save(log);
+			}
+			
 			return result;
 		} catch(Exception e) {
 			throw new OobException(getMessageException(e), e);
@@ -75,16 +85,19 @@ public class LockServiceImpl implements LockService {
 					throw new OobException(String.format(messageService.getMessage("error.locked-by-other", currentUser), lock.getUser()));
 				}
 				//
-				ObjectLog log = new ObjectLog();
-				log.setType(lock.getType());
-				log.setOwner(lock.getOwner());
-				log.setName(lock.getName());
-				log.setUser(currentUser.getId());
-				log.setDate(new Date());
-				log.setComment(lock.getComment());
-				log.setRef(lock.getRef());
-				log.setIdOperation(Constants.OP_UNLOCK);
-				objectLogRepository.save(log);
+				Operation op = operationRepository.findOne(Constants.OP_UNLOCK);
+				if(op.getLog()) {				
+					ObjectLog log = new ObjectLog();
+					log.setType(lock.getType());
+					log.setOwner(lock.getOwner());
+					log.setName(lock.getName());
+					log.setUser(currentUser.getId());
+					log.setDate(new Date());
+					log.setComment(lock.getComment());
+					log.setRef(lock.getRef());
+					log.setIdOperation(Constants.OP_UNLOCK);
+					objectLogRepository.save(log);
+				}
 				//
 				lockRepository.delete(lock);
 			} catch(Exception e) {

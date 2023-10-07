@@ -129,4 +129,8 @@ export class LogListComponent implements AfterViewInit, AfterContentInit  {
     this.logDialogService.open(o);
   }
 
+  volver() {
+    this.router.navigate(["lockmanager"])
+  }
+
 }

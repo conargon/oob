@@ -39,6 +39,8 @@
     "btn.edit": "Edit",
     "btn.enable": "Enable",
     "btn.disable": "Disable",    
+    "btn.actions": "Actions",
+    "btn.back": "Back",
     "my.locks": "My locks",
     "locks": "Locks",
     "total.locks": "Total Locks: {{locks}} Total Compilations: {{compiles}} Total Fails: {{fails}}",
@@ -102,7 +104,8 @@
     "locked.by-user": "Locked by {{user}}",
     "options.title": "Options",
     "options.schemas.support": "Registered schemes",
-    "options.types.support": "Supported types",    
+    "options.types.support": "Supported types", 
+    "options.ops.support": "Registered operations",   
     "options.default.lang": "Default language",
     "options.save.ok": "Options saved with success",
     "options.save.error": "Error saving options: {{error}}",
@@ -119,5 +122,6 @@
     "export.xls": "Export to Excel",
     "options.schemas": "Schemes registered in the system",
     "options.types": "Types registered in the system",
+    "options.ops": "Operations registered in the system",
     "options.lang": "Language of system messages"     
 }

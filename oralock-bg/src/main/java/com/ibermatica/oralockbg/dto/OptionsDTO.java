@@ -15,4 +15,6 @@ public class OptionsDTO {
 	
 	private List<Option> options;
 	
+	private List<String> ops;
+	
 }

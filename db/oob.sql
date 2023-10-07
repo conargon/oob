@@ -149,7 +149,8 @@ create sequence oob.oobl_block_seq increment by 1 start with 1;
 -- Operations table
 create table oob.oobl_op (
     op_id varchar2(20) not null,
-    op_name varchar2(30) not null
+    op_name varchar2(30) not null,
+    op_log char(1) default '1' not null
 ); 
 
 comment on table oob.oobl_op is 'Operations table';
@@ -158,14 +159,13 @@ comment on column oob.oobl_op.op_name is 'Translation code';
 
 create unique index oob.oobl_op_pk on oob.oobl_op(op_id);
 alter table oob.oobl_op add constraint oobl_op_pk primary key(op_id);
+alter table oob.oobl_op add constraint oobl_op_chk_01 check (op_log in ('1','0'));
 
-insert into oob.oobl_op(op_id, op_name) values ('LOCK','op.lock'); 
-insert into oob.oobl_op(op_id, op_name) values ('UNLOCK','op.unlock'); 
-insert into oob.oobl_op(op_id, op_name) values ('COMPILE','op.compile'); 
-insert into oob.oobl_op(op_id, op_name) values ('COMPILE-ERROR','op.compile-error'); 
+insert into oob.oobl_op(op_id, op_name, op_log) values ('LOCK','op.lock','1'); 
+insert into oob.oobl_op(op_id, op_name, op_log) values ('UNLOCK','op.unlock','1'); 
+insert into oob.oobl_op(op_id, op_name, op_log) values ('COMPILE','op.compile','1'); 
+insert into oob.oobl_op(op_id, op_name, op_log) values ('COMPILE-ERROR','op.compile-error','1'); 
 commit;
-
-alter table oob.oobl_op read only;
 	
 -- Log operations table
 create table oob.oobl_log (
@@ -264,8 +264,8 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('ty
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.mview','va','Vista materialitzada','Vistes materialitzades');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.mview','en','Materialized view','Materialized views');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.index','es','ï¿½ndice','ï¿½ndices');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.index','va','ï¿½ndex','ï¿½ndexs');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.index','es','Índice','Índices');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.index','va','Índex','Índexs');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.index','en','Index','Indexes');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.trigger','es','Disparador','Disparadores');
@@ -288,8 +288,8 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('ty
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.procedure','va','Procediment','Procediments');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.procedure','en','Procedure','Procedures');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.synonym','es','Sinï¿½nimo','Sinï¿½nimos');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.synonym','va','Sinï¿½nim','Sinï¿½nims');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.synonym','es','Sinónimo','Sinónimos');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.synonym','va','Sinónim','Sinónims');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.synonym','en','Synonym','Synonyms');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.java-source','es','Clase Java','Clases Java');
@@ -297,7 +297,7 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('ty
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.java-source','en',' Java class','Java classes');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.sequence','es','Secuencia','Secuencias');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.sequence','va','Seqï¿½ï¿½ncia','Seqï¿½ï¿½ncies');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.sequence','va','Seqüencia','Seqüencies');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.sequence','en','Sequence','Sequences');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.type','es','Tipo','Tipos');
@@ -313,7 +313,7 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('ty
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.cluster','en','Cluster','Clusters');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.dblink','es','Enlace a base de datos','Enlaces a base de datos');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.dblink','va','Enllaï¿½ a base de dades','Enllaï¿½os a base de dades');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.dblink','va','Enllaç a base de dades','Enllaços a base de dades');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.dblink','en','Database link','Database links');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.job','es','Tarea (job)','Tareas (jobs)');
@@ -332,12 +332,12 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.unlock','e
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.unlock','va','Desbloqueig d''objecte');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.unlock','en','Object unlock');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile','es','Compilaciï¿½n de objeto');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile','va','Compilaciï¿½ d''objecte');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile','es','Compilación de objeto');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile','va','Compilació d''objecte');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile','en','Object compilation');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile-error','es','Compilaciï¿½n no permitida de objeto');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile-error','va','Compilaciï¿½ no permesa d''objecte');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile-error','es','Compilación no permitida de objeto');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile-error','va','Compilació no permesa d''objecte');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('op.compile-error','en','Object compilation denied');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('role.admin', 'es', 'Administrador');
@@ -348,12 +348,12 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('role.user', '
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('role.user', 'va', 'Usuari');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('role.user', 'en', 'User');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20010', 'es', 'No se permite cambiar ningï¿½n dato del bloqueo');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20010', 'es', 'No se permite cambiar ningún dato del bloqueo');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20010', 'va', 'No es permet canviar cap dada del bloqueig');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20010', 'en', 'It is not allowed to change any data of the lock');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20014', 'es', 'El usuario no estï¿½ autorizado para bloquear el objeto');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20014', 'va', 'L''usuari no estï¿½ autoritzat per a bloquejar l''objecte');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20014', 'es', 'El usuario no está autorizado para bloquear el objeto');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20014', 'va', 'L''usuari no está autoritzat per a bloquejar l''objecte');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20014', 'en', 'The user is not authorized to lock the object');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20015', 'es', 'El objeto a bloquear pertenece a un esquema no registrado');
@@ -364,16 +364,16 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20016',
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20016', 'va', 'El tipus de l''objecte a bloquejar no ï¿½s valgut');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20016', 'en', 'The type of the object to lock is not valid');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20017', 'es', 'El objeto ya estï¿½ bloqueado');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20017', 'va', 'L''objecte ja estï¿½ bloquejat');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20017', 'es', 'El objeto ya está bloqueado');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20017', 'va', 'L''objecte ja está bloquejat');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20017', 'en', 'The object is already locked');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20020', 'es', 'No se permite modificar el disparador {0}');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20020', 'va', 'No es permet modificar el disparador {0}');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20020', 'en', 'Not allowed to modify the trigger {0}');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20021', 'es', 'El objeto {0} estï¿½ bloqueado por el usuario {1}');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20021', 'va', 'L''objecte {0} estï¿½ bloquejat per l''usuari {1}');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20021', 'es', 'El objeto {0} está bloqueado por el usuario {1}');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20021', 'va', 'L''objecte {0} está bloquejat per l''usuari {1}');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text) values ('error.20021', 'en', 'Object {0} is locked by user {1}');
 
 commit;
@@ -405,10 +405,20 @@ end get_traslated_msg;
 create or replace procedure oob.save_ce_log(p_type_obj in varchar2, p_owner_obj in varchar2, p_name_obj in varchar2, p_user in varchar2, p_event in varchar2)
 is
 pragma autonomous_transaction;
+dummy integer;
 begin
+    select 1
+    into dummy
+    from oobl_op
+    where op_id = 'COMPILE-ERROR' 
+      and op_log=1;
+    --
     insert into oobl_log (ol_id, ol_type, ol_owner, ol_name, ol_op, ol_user, ol_date, ol_comment)
     values (oobl_log_seq.nextval, p_type_obj, p_owner_obj, p_name_obj, 'COMPILE-ERROR', p_user, sysdate, 'Op: ' || p_event);     
     commit;
+exception
+    when NO_DATA_FOUND then
+         null;
 end;
 /
 
@@ -497,8 +507,7 @@ compound trigger
         
     elsif updating then                           
          -- It is not allowed to change any data of the lock                                   
-         raise_application_error(-20010, get_traslated_msg('error.20010'));        
-             
+         raise_application_error(-20010, get_traslated_msg('error.20010'));                     
     end if;
 
   end before each row;
@@ -530,7 +539,7 @@ begin
     v_name_obj := ora_dict_obj_name;
     v_type_obj := ora_dict_obj_type;
     
-    -- el esquema estï¿½ registrado en oobl        
+    -- el esquema esta registrado en oobl        
     begin
         select 1
         into dummy
@@ -541,7 +550,7 @@ begin
              return;
     end;       
        
-    -- el tipo estï¿½ registrado y activo
+    -- el tipo esta registrado y activo
     begin
         select 1
         into dummy
@@ -553,8 +562,20 @@ begin
              return;
     end;       
     
+    -- ¿guardamos log?
+    begin
+        select 1
+        into dummy
+        from oobl_op
+        where op_id = 'COMPILE' 
+          and op_log=1;    
+    exception
+        when no_data_found then
+             return;
+    end;       
+    
     insert into oobl_log (ol_id, ol_type, ol_owner, ol_name, ol_op, ol_user, ol_date, ol_comment)
-    values (oobl_log_seq.nextval, v_type_obj, v_owner_obj, v_name_obj, 'COMPILE', sys_context('USERENV','CURRENT_USER'), sysdate, ora_sysevent);     
+    values (oobl_log_seq.nextval, v_type_obj, v_owner_obj, v_name_obj, 'COMPILE', USER, sysdate, ora_sysevent);     
 
 end oobl_db_log_trg; 
 /

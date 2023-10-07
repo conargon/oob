@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ibermatica.oralockbg.dto.OptionsDTO;
 import com.ibermatica.oralockbg.exception.OobException;
 import com.ibermatica.oralockbg.model.ObjectType;
+import com.ibermatica.oralockbg.model.Operation;
 import com.ibermatica.oralockbg.model.Option;
 import com.ibermatica.oralockbg.model.RegisteredSchema;
 import com.ibermatica.oralockbg.model.Schema;
 import com.ibermatica.oralockbg.model.User;
 import com.ibermatica.oralockbg.repository.ObjectTypeRepository;
+import com.ibermatica.oralockbg.repository.OperationRepository;
 import com.ibermatica.oralockbg.repository.OptionRepository;
 import com.ibermatica.oralockbg.repository.RegisteredSchemaRepository;
 import com.ibermatica.oralockbg.repository.SchemaRepository;
@@ -37,6 +39,9 @@ public class OptionServiceImpl implements OptionService {
 	private ObjectTypeRepository objectTypeRepository;
 	
 	@Autowired
+	private OperationRepository operationRepository;	
+	
+	@Autowired
 	private MessageService messageService;		
 	
 	@Override
@@ -47,20 +52,20 @@ public class OptionServiceImpl implements OptionService {
 	@Override
 	@Transactional
 	public void save(OptionsDTO options, User currentUser) {
-		//
+		// pre-validations
 		validate(options, currentUser);
-		//
+		// options
 		for(Option opt: options.getOptions()) {
 			Option o = optionRepository.findOne(opt.getId());
 			o.setValue(opt.getValue());
 			optionRepository.save(o);
 		}
-		//
+		// schemas
 		registeredSchemaRepository.deleteAll();
 		for(String schema: options.getSchemas()) {
 			registeredSchemaRepository.save(new RegisteredSchema(schema));
 		}
-		//
+		// types
 		Iterable<ObjectType> types = objectTypeRepository.findAll();
 		Iterator<ObjectType> iteratorTypes = types.iterator();
 		while(iteratorTypes.hasNext()) {
@@ -68,6 +73,14 @@ public class OptionServiceImpl implements OptionService {
 			ot.setActive(options.getTypes().contains(ot.getId()));
 			objectTypeRepository.save(ot);
 		}
+		// operations
+		Iterable<Operation> ops = operationRepository.findAll();
+		Iterator<Operation> iteratorOps = ops.iterator();
+		while(iteratorOps.hasNext()) {
+			Operation op = iteratorOps.next();
+			op.setLog(options.getOps().contains(op.getId()));
+			operationRepository.save(op);
+		}		
 		 
 	}
 	

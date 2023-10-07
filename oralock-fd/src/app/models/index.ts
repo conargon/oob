@@ -3,6 +3,7 @@ export * from './objectType';
 export * from './oracleObject';
 export * from './lock';
 export * from './user';
+export * from './op';
 export * from './objectLog';
 export * from './translation';
 export * from './role';

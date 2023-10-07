@@ -37,12 +37,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<!-- descomentar para desplegar en wildfly
 			<exclusions>
 				<exclusion>
 					<groupId>ch.qos.logback</groupId>
 					<artifactId>logback-classic</artifactId>
 				</exclusion>
-			</exclusions>				
+			</exclusions>	
+			-->			
 		</dependency>
 
 		<dependency>
