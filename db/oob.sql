@@ -280,8 +280,8 @@ insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('ty
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.package-body','va','Paquet (cos)','Paquets (cos)');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.package-body','en','Package body','Packages body');
 
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.function','es','Funciï¿½n','Funciones');
-insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.function','va','Funciï¿½','Funcions');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.function','es','Función','Funciones');
+insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.function','va','Funció','Funcions');
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.function','en','Function','Functions');
 
 insert into oob.oobl_translation(ot_id, ot_lang, ot_text, ot_text_p) values ('type.procedure','es','Procedimiento','Procedimientos');
