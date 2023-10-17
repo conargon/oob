@@ -3,6 +3,7 @@ package com.ibermatica.oralockbg.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -12,13 +13,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Where;
+
+import com.ibermatica.oralockbg.converter.PrimitiveBooleanToNumberConverter;
 
 import lombok.Data;
 
 @Entity
 @Table(name="dba_objects")
-@Where(clause = "object_type in (select ot.oo_id from oob.oobl_object ot where ot.oo_active=1)")
+//@Where(clause = "object_type in (select ot.oo_id from oob.oobl_object ot where ot.oo_active=1)")
 @Data
 public class OracleObject implements Serializable {
 
@@ -50,6 +54,10 @@ public class OracleObject implements Serializable {
     }
     )
 	private Lock lock;
+    
+    @Formula("(select decode(count(*), 0, 0, 1) from oob.oobl_object ot where ot.oo_active=1 and ot.oo_id=object_type)")
+    @Convert(converter = PrimitiveBooleanToNumberConverter.class)
+    private Boolean activeType;
 
 }
 

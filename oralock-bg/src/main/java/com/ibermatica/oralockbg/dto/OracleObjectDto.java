@@ -25,4 +25,6 @@ public class OracleObjectDto {
 	
 	private LockDto lock;
 	
+	private Boolean activeType;
+	
 }

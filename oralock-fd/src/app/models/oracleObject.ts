@@ -13,4 +13,5 @@ export interface OracleObject {
         comment: string;
         date: Date;
     };
+    activeType: boolean;
 }
