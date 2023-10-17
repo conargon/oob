@@ -130,7 +130,7 @@
         <div class="actions">
           <button mat-flat-button [color]="element.isBlocked ? 'primary' : 'accent'"
             style="min-width: 125px"
-            [disabled]="element.isBlocked && element.lock.user!==currentUser.login.toUpperCase() && !currentUser.data.roleAdmin"
+            [disabled]="(element.isBlocked && element.lock.user!==currentUser.login.toUpperCase() && !currentUser.data.roleAdmin) || (!element.isBlocked && !element.activeType)"
             (click)="element.isBlocked ? unlockObject($event, element) : lockObject($event, element)"
             [title]="element.isBlocked ? ('btn.unlock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name : ('btn.lock'|translate) + ' ' + (element.label|translatedb) + ' ' + element.owner + '.' + element.name">
             {{element.isBlocked ? ('btn.unlock'|translate) : ('btn.lock'|translate)}}

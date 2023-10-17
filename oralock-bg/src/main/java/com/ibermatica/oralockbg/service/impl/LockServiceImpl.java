@@ -14,10 +14,12 @@ import com.ibermatica.oralockbg.exception.OobException;
 import com.ibermatica.oralockbg.mapper.LockMapper;
 import com.ibermatica.oralockbg.model.Lock;
 import com.ibermatica.oralockbg.model.ObjectLog;
+import com.ibermatica.oralockbg.model.ObjectType;
 import com.ibermatica.oralockbg.model.Operation;
 import com.ibermatica.oralockbg.model.User;
 import com.ibermatica.oralockbg.repository.LockRepository;
 import com.ibermatica.oralockbg.repository.ObjectLogRepository;
+import com.ibermatica.oralockbg.repository.ObjectTypeRepository;
 import com.ibermatica.oralockbg.repository.OperationRepository;
 import com.ibermatica.oralockbg.service.LockService;
 import com.ibermatica.oralockbg.service.MessageService;
@@ -33,6 +35,9 @@ public class LockServiceImpl implements LockService {
 	
 	@Autowired
 	private OperationRepository operationRepository;
+	
+	@Autowired
+	private ObjectTypeRepository objectTypeRepository;
 		
 	@Autowired
 	private LockMapper lockMapper;	
@@ -42,7 +47,11 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	@Transactional
-	public LockDto save(LockDto lockDto, User currentUser) {		
+	public LockDto save(LockDto lockDto, User currentUser) {	
+		ObjectType ot = objectTypeRepository.findOne(lockDto.getType());
+		if(ot == null || Boolean.FALSE.equals(ot.getActive())) {
+			throw new OobException(String.format(messageService.getMessage("error.lock.type.no-active", currentUser), lockDto.getType()));
+		}
 		try {
 			Lock lock = new Lock();
 			lock.setType(lockDto.getType());

@@ -22,7 +22,7 @@ import lombok.Data;
 
 @Entity
 @Table(name="dba_objects")
-//@Where(clause = "object_type in (select ot.oo_id from oob.oobl_object ot where ot.oo_active=1)")
+@Where(clause = "object_type in (select ot.oo_id from oob.oobl_object ot)")
 @Data
 public class OracleObject implements Serializable {
 
