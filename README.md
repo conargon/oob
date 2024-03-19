@@ -1,1 +1,1 @@
-Herramienta colaborativa para múltiples equipos de desarrollo, que permite bloquear cualquier tipo de objeto Oracle (tablas, vistas, procedimientos almacenados PL/SQL, etc.) para evitar modificaciones concurrentes por otros desarrolladores.
+Collaborative tool for multiple development teams, enabling locking of any type of Oracle object (tables, views, PL/SQL stored procedures, etc.) to prevent concurrent modifications by other developers.
