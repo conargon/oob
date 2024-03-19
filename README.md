@@ -5,7 +5,7 @@ Collaborative tool, made with *Angular* and *Spring Boot*, for multiple developm
 ![OOB](/public/screen01.png)
 ![OOB](/public/screen02.png)
 
-# MAKE & INSTALL
+## MAKE & INSTALL
 
 Steps:
 
