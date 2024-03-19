@@ -1,8 +1,9 @@
 # OOB
 
-Collaborative tool for multiple development teams, enabling locking of any type of Oracle object (tables, views, PL/SQL stored procedures, etc.) to prevent concurrent modifications by other developers.
+Collaborative tool, made with *Angular* and *Spring Boot*, for multiple development teams, enabling locking of any type of Oracle object (tables, views, PL/SQL stored procedures, etc.) to prevent concurrent modifications by other developers.
 
-![OOBt](/public/screen01.png)
+![OOB](/public/screen01.png)
+![OOB](/public/screen02.png)
 
 # MAKE & INSTALL
 
