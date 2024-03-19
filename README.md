@@ -2,6 +2,10 @@
 
 Collaborative tool for multiple development teams, enabling locking of any type of Oracle object (tables, views, PL/SQL stored procedures, etc.) to prevent concurrent modifications by other developers.
 
+![OOBt](/public/screen01.png)
+
+# MAKE & INSTALL
+
 Steps:
 
 1. Run the script *oob.sql* located in the *db* folder.
