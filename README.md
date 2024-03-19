@@ -10,5 +10,5 @@ Collaborative tool, made with *Angular* and *Spring Boot*, for multiple developm
 Steps:
 
 1. Run the script *oob.sql* located in the *db* folder.
-2. Package the backend application in a *war* file and deploy it in a J2EE Server the project located in the *oralock-bg* folder.
-2. Package the frontend application in a *war* file and deploy it in a J2EE Server the project located in the *oralock-fd* folder.
+2. Package the backend application in a *war* file and deploy it in a J2EE Server. This project is located in the *oralock-bg* folder.
+2. Package the frontend application in a *war* file and deploy it in a J2EE Server. This project is located in the *oralock-fd* folder.
